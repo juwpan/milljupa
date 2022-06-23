@@ -24,19 +24,16 @@ gem "cssbundling-rails"
 
 # gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap"
+gem "puma", "~> 5.0"
 
 group :development do
   gem 'sqlite3', '~> 1.4'
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem "puma", "~> 5.0"
-  gem 'byebug'
   gem 'rspec-rails'
   gem 'factory_bot'
   gem 'shoulda-matchers'
-
   # Гем, который использует rspec, чтобы смотреть наш сайт
   gem 'capybara'
-
   # Гем, который позволяет смотреть, что видит capybara
   gem 'launchy'
 end
