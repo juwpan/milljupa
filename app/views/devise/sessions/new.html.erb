@@ -1,4 +1,5 @@
 <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
+
 <%= devise_error_messages! %>
 
 <div class="form-group mb-3">
@@ -25,7 +26,7 @@
 
 <div class="form-group mb-3">
     <div class="col-sm-6 col-sm-offset-2">
-        <%= f.submit t("submit.log_in"), class: 'btn btn-success' %>
+        <%= f.submit t("submit.log_in"), class: 'btn btn-success', data: { turbo: false } %>
     </div>
 </div>
 
