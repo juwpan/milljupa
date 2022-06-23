@@ -4,7 +4,7 @@
     <h1><%= @user.name %></h1>
     <%= link_to 'Сменить имя и пароль', edit_user_registration_path(@user) if @user == current_user %>
   </div>
-  <table class="users-table table">
+  <table class="users-table table text-color">
     <thead>
       <tr>
         <th class="text-center">#</th>

@@ -10,6 +10,7 @@
   
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+
 </head>
 <body>
 
@@ -28,7 +29,7 @@
 
         <%= link_to content_tag(:span, "#{current_user.name} - #{number_to_currency current_user.balance}"),
                     user_path(current_user),
-                    class: 'btn navbar-btn'
+                    class: 'btn navbar-btn text-color-header'
         %>
         
         <%= link_to 'Новая игра', games_path, method: :post, class: 'btn navbar-btn btn-success btn-xs' %>
@@ -46,6 +47,9 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
+    
+    <%= render "devise/shared/flash" %>
+
       <%= yield %>
     </div>
   </div>
