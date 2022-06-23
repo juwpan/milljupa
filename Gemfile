@@ -6,11 +6,13 @@ ruby "3.0.2"
 gem "rails", "~> 7.0.3"
 gem 'rails_admin'
 
-gem 'devise'
-gem 'devise-i18n'
+gem "devise"
+gem "devise-i18n"
+gem "rails-i18n"
 
 gem 'uglifier'
 
+gem 'font-awesome-sass'
 gem 'font-awesome-rails'
 gem 'russian'
 
@@ -19,6 +21,7 @@ gem "jsbundling-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "cssbundling-rails"
+
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
 group :development do
@@ -46,3 +49,6 @@ group :production do
   gem "pg", "~> 1.1"
   gem 'rails_12factor'
 end
+
+gem 'redis', '~> 4.0'
+gem "sassc-rails"

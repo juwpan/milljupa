@@ -1,32 +1,29 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
- *= require bootstrap_and_overrides
- *= require font-awesome
- *= require games
- *= require users
- *= require_self
- */
-
 body, html {
   font-family: Arial, sans-serif;
   height: 100%;
-  background-image: url(<%= asset_path ('bg.jpg') %>);
+  background-image: url('bg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   background-position: center center;
   background-attachment: fixed;
   color: white;
+}
+
+a {
+  color: rgb(240, 234, 234);
+}
+
+a.navbar-brand {
+  color: rgb(255, 255, 255);
+}
+
+a.navbar-brand:hover {
+  color: rgb(177, 177, 177);
+}
+
+.navbar-static-top {
+  background-color: rgba(88, 90, 92, 0.473);
 }
 
 h2, h3 {

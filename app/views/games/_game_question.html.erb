@@ -3,6 +3,8 @@
 <% game = game_question.game %>
 <% help = game_question.help_hash %>
 
+<%= render partial: 'errors/form_errors', locals: {model: game} %>
+
 <div class="alert alert-info text-center">
   <h2><%= game_question.text %></h2>
 </div>
@@ -12,12 +14,13 @@
     <%# Если была использована подсказка 50/50, нам нужно проверить, есть ли вариант среди оставшихся %>
     <% if !help.key?(:fifty_fifty) || help[:fifty_fifty].include?(letter) %>
       <div class="col-md-6 buffer-top">
-        <%= link_to content_tag(:span, letter.upcase, class: 'variant') + ": #{variant}",
+      <span class='variant'>
+        <%= button_to "#{letter.upcase }: #{variant}",
                     answer_game_path(game, letter: letter),
                     method: :put,
                     remote: true,
                     class: 'btn btn-block btn-default btn-variant'
-        %>
+        %></span>
       </div>
     <% end %>
   <% end %>
