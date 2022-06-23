@@ -11,7 +11,7 @@ gem "devise-i18n"
 gem "rails-i18n"
 gem 'russian'
 
-# gem 'uglifier'
+gem 'uglifier'
 
 gem 'font-awesome-sass'
 # gem 'font-awesome-rails'
