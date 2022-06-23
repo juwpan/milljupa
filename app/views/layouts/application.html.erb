@@ -10,7 +10,6 @@
   
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-
 </head>
 <body>
 
@@ -25,7 +24,6 @@
           <%= link_to 'Админка', rails_admin_path, class: 'btn navbar-btn btn-danger btn-xs' %>
           <%= link_to 'Залить новые вопросы', new_questions_path, class: 'btn navbar-btn btn-warning btn-xs' %>
         <% end %>
-
 
         <%= link_to content_tag(:span, "#{current_user.name} - #{number_to_currency current_user.balance}"),
                     user_path(current_user),

@@ -8,4 +8,4 @@ ActiveStorage.start()
 import "@fortawesome/fontawesome-free"
 import * as bootstrap from "bootstrap"
 
-// import "jquery"
+import "jquery"

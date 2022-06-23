@@ -15,16 +15,16 @@
     </div>
   </div>
 
-  <div class="col-sm-3 col-sm-pull-9">
+  <div class="col-sm-3 col-sm-pull-9 mt-3">
     <ul class="list-group list-group-prizes game-prizes">
       <% Game::PRIZES.reverse.each_with_index do |prize, index| %>
         <li class="list-group-item text-center <%= 'active' if (14 - index == @game.current_level) %>">
-          <%= fa_icon('diamond') if Game::FIREPROOF_LEVELS.include?(14-index) %>
+          <%= fa_icon('arrow-left-circle-f') if Game::FIREPROOF_LEVELS.include?(14-index) %>
           <%= prize %>
         </li>
       <% end %>
     </ul>
 
-    <%= link_to 'Забрать выигрыш', take_money_game_path(@game), method: :put, class: 'btn btn-info btn-block' %>
+    <%= link_to 'Забрать выигрыш', take_money_game_path(@game), data: { turbo_method: :put }, class: 'btn btn-info btn-block mt-3' %>
   </div>
 </div>

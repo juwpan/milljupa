@@ -9,10 +9,10 @@
     <%= content_tag :span, '50/50',
       class: "label label-primary #{'game-help-used' if game.fifty_fifty_used?}"
     %>
-    <%= content_tag :span, fa_icon('phone'),
+    <%= content_tag :span, 'phone',
       class: "label label-primary #{'game-help-used' if game.friend_call_used?}"
     %>
-    <%= content_tag :span, fa_icon('users'),
+    <%= content_tag :span, 'help users',
       class: "label label-primary #{'game-help-used' if game.audience_help_used?}"
     %>
   </td>

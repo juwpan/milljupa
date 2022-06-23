@@ -2,6 +2,10 @@ th.text-center {
   color: rgb(232, 208, 127);
 }
 
+li.text-center {
+  color:rgba(216, 216, 216, 0.635)
+}
+
 td {
   color:rgba(216, 216, 216, 0.635)
 }
