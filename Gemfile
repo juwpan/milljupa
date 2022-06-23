@@ -11,7 +11,7 @@ gem "devise-i18n"
 gem "rails-i18n"
 gem 'russian'
 
-gem 'uglifier'
+# gem 'uglifier'
 
 gem 'font-awesome-sass'
 # gem 'font-awesome-rails'
@@ -22,7 +22,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 gem "cssbundling-rails"
 
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+# gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap"
 
 group :development do
