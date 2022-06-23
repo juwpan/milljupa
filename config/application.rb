@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 module Billionaire
   class Application < Rails::Application
+    config.load_defaults 7.0
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
 
@@ -16,7 +18,6 @@ module Billionaire
     config.i18n.fallbacks = [:en]
 
     config.time_zone = 'Moscow'
-
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     # config.active_record.raise_in_transactional_callbacks = true
