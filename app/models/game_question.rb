@@ -5,7 +5,7 @@ require 'game_help_generator'
 
 # Игровой вопрос — при создании новой игры формируется массив
 # из 15 игровых вопросов для конкретной игры и игрока.
-class GameQuestion < ActiveRecord::Base
+class GameQuestion < ApplicationRecord
 
   belongs_to :game
 

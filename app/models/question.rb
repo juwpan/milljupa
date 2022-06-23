@@ -2,7 +2,7 @@
 #
 # Вопрос — основная смысловая единица базы вопросов.
 # Из вопросов разных уровней сложности формируются все игры.
-class Question < ActiveRecord::Base
+class Question < ApplicationRecord
 
   QUESTION_LEVELS = (0..14).freeze
 

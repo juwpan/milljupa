@@ -1,4 +1,4 @@
-class AddHelpFieldToGame < ActiveRecord::Migration
+class AddHelpFieldToGame < ActiveRecord::Migration[7.0]
   def change
     add_column :games, :fifty_fifty_used, :boolean, default: false, null: false
     add_column :games, :audience_help_used, :boolean, default: false, null: false
