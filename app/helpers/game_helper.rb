@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GameHelper
   def game_label(game)
     if game.status == :in_progress && current_user == game.user

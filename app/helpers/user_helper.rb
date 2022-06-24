@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserHelper
   def resources_name
     :user
@@ -17,9 +19,9 @@ module UserHelper
 
   def flash_class(level)
     case level
-        when :notice then "alert alert-success"
-        when :error then "alert alert-danger"
-        when :alert then "alert alert-danger"
+    when :notice then 'alert alert-success'
+    when :error then 'alert alert-danger'
+    when :alert then 'alert alert-danger'
     end
   end
 end

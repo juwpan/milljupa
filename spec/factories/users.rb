@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   # фабрика, создающая юзеров
   factory :user do
@@ -15,6 +17,6 @@ FactoryBot.define do
     balance { 0 }
 
     # коллбэк - после фазы :build записываем поля паролей, иначе Devise не позволит :create юзера
-    after(:build) { |u| u.password_confirmation = u.password = "1" }
+    after(:build) { |u| u.password_confirmation = u.password = '1' }
   end
 end

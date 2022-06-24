@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (c) goodprogrammer.ru
 #
 # Админский контроллер, только для наполнения базы вопросов с помощью файлов
@@ -13,8 +15,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions/new
   # Форма для загрузки пачки вопросов
-  def new
-  end
+  def new; end
 
   # POST /questions
   # Обработка формы, содержащей файл с вопросами и поле - уровень
@@ -40,11 +41,10 @@ class QuestionsController < ApplicationController
 
     # отправляем на страницу new и выводим статистику о проделаных операциях
     redirect_to new_questions_path,
-                notice: "Уровень #{level}, обработано #{file_lines.size}," +
-                  " создано #{file_lines.size - failed_count}," +
-                  " время #{Time.at((Time.now - start_time).to_i).utc.strftime '%S.%L сек'}"
+                notice: "Уровень #{level}, обработано #{file_lines.size}," \
+                        " создано #{file_lines.size - failed_count}," \
+                        " время #{Time.at((Time.now - start_time).to_i).utc.strftime '%S.%L сек'}"
   end
-
 
   private
 
@@ -74,5 +74,4 @@ class QuestionsController < ApplicationController
 
     failed
   end
-
 end

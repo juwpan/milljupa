@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 #  (c) goodprogrammer.ru
 #
 # Вопрос — основная смысловая единица базы вопросов.
 # Из вопросов разных уровней сложности формируются все игры.
 class Question < ApplicationRecord
-
-  QUESTION_LEVELS = (0..14).freeze
+  QUESTION_LEVELS = (0..14)
 
   # у вопроса должен быть уровень сложности
-  validates :level, presence: true, inclusion: {in: QUESTION_LEVELS}
+  validates :level, presence: true, inclusion: { in: QUESTION_LEVELS }
 
   # Текст вопроса (не может быть пустым и не должен повторяться, иначе смысл?)
   validates :text, presence: true, uniqueness: true, allow_blank: false

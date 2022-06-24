@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (c) goodprogrammer.ru
 #
 # Контроллер, отображающий список и профиль юзера

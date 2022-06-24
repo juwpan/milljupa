@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :game do
     # связь с юзером
     association :user
 
     #  игра только начата
-    finished_at {nil}
+    finished_at { nil }
     current_level { 0 }
     is_failed { false }
     prize { 0 }
@@ -14,7 +16,7 @@ FactoryBot.define do
     # фабрика наследует все поля от фабрики :game
     factory :game_with_questions do
       # коллбэк после :build игры - создаем 15 вопросов
-      after(:build) { |game|
+      after(:build) do |game|
         15.times do |i|
           # factory_bot create - дергает соотв. фабрику
           # создаем явно вопрос с нужным уровнем
@@ -22,7 +24,7 @@ FactoryBot.define do
           # создаем связанные game_questions с нужной игрой и вопросом
           create(:game_question, game: game, question: q)
         end
-      }
+      end
     end
   end
 end

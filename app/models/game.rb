@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 #  (c) goodprogrammer.ru
 #
 # Модельи игры — создается когда пользователь начинает новую игру
 # Хранит/обновляет состояние игры и отвечает за игровой процесс.
 class Game < ApplicationRecord
-
   # денежный приз за каждый вопрос
   PRIZES = [
     100, 200, 300, 500, 1000,
-    2000, 4000, 8000, 16000, 32000,
-    64000, 125000, 250000, 500000, 1000000
+    2000, 4000, 8000, 16_000, 32_000,
+    64_000, 125_000, 250_000, 500_000, 1_000_000
   ].freeze
 
   # номера несгораемых уровней
@@ -25,16 +26,15 @@ class Game < ApplicationRecord
   validates :user, presence: true
 
   # текущий вопрос (его уровень сложности)
-  validates :current_level, numericality: {only_integer: true}, allow_nil: false
+  validates :current_level, numericality: { only_integer: true }, allow_nil: false
 
   # выигрышь игрока - от нуля до максимального приза за игру
   validates :prize,
             presence: true,
-            numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: PRIZES.last}
+            numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: PRIZES.last }
 
   # Scope - подмножество игр, у которых поле finished_at пустое
   scope :in_progress, -> { where(finished_at: nil) }
-
 
   #---------  Фабрика-генератор новой игры ------------------------------
 
@@ -48,7 +48,8 @@ class Game < ApplicationRecord
       Question::QUESTION_LEVELS.each do |i|
         q = Question.where(level: i).order('RANDOM()').first
         ans = [1, 2, 3, 4]
-        game.game_questions.create!(question: q, a: ans.shuffle!.pop, b: ans.shuffle!.pop, c: ans.shuffle!.pop, d: ans.shuffle!.pop)
+        game.game_questions.create!(question: q, a: ans.shuffle!.pop, b: ans.shuffle!.pop, c: ans.shuffle!.pop,
+                                    d: ans.shuffle!.pop)
       end
       game
     end
@@ -101,11 +102,10 @@ class Game < ApplicationRecord
     return false if time_out! || finished? # законченную игру низя обновлять
 
     if current_game_question.answer_correct?(letter)
+      self.current_level += 1
       if current_level == Question::QUESTION_LEVELS.max
-        self.current_level += 1
         finish_game!(PRIZES[Question::QUESTION_LEVELS.max], false)
       else
-        self.current_level += 1
         save!
       end
 
@@ -119,11 +119,11 @@ class Game < ApplicationRecord
   # Записываем юзеру игровую сумму на счет и завершаем игру,
   def take_money!
     return if time_out! || finished? # из законченной или неначатой игры нечего брать
-    finish_game!((previous_level > -1) ? PRIZES[previous_level] : 0, false)
+
+    finish_game!(previous_level > -1 ? PRIZES[previous_level] : 0, false)
   end
 
-
-  # todo: дорогой ученик!
+  # TODO: дорогой ученик!
   # Код метода ниже можно сократиь в 3 раза с помощью возможностей Ruby и Rails,
   # подумайте как и реализуйте. Помните о безопасности и входных данных!
   #
@@ -161,7 +161,6 @@ class Game < ApplicationRecord
     false
   end
 
-
   # Результат игры, одно из:
   # :fail - игра проиграна из-за неверного вопроса
   # :timeout - игра проиграна из-за таймаута
@@ -172,7 +171,7 @@ class Game < ApplicationRecord
     return :in_progress unless finished?
 
     if is_failed
-      # todo: дорогой ученик!
+      # TODO: дорогой ученик!
       # Если TIME_LIMIT в будущем изменится, статусы старых, уже сыгранных игр
       # могут измениться. Подумайте как это пофиксить!
       # Ответ найдете в файле настроек вашего тестового окружения
@@ -181,12 +180,10 @@ class Game < ApplicationRecord
       else
         :timeout
       end
+    elsif current_level > Question::QUESTION_LEVELS.max
+      :won
     else
-      if current_level > Question::QUESTION_LEVELS.max
-        :won
-      else
-        :money
-      end
+      :money
     end
   end
 
@@ -195,7 +192,6 @@ class Game < ApplicationRecord
   # Метод завершатель игры
   # Обновляет все нужные поля и начисляет юзеру выигрыш
   def finish_game!(amount = 0, failed = true)
-
     # оборачиваем в транзакцию - игра заканчивается
     # и баланс юзера пополняется только вместе
     transaction do
@@ -214,5 +210,4 @@ class Game < ApplicationRecord
     lvl = FIREPROOF_LEVELS.select { |x| x <= answered_level }.last
     lvl.present? ? PRIZES[lvl] : 0
   end
-
 end
