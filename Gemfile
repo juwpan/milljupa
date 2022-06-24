@@ -27,15 +27,22 @@ gem "bootsnap"
 gem "puma", "~> 5.0"
 
 group :development do
+  gem 'rubocop'
+  gem 'rubocop-performance'
+  gem 'rubocop-rspec'
+  gem 'rspec-rails', '~> 5.0.0'
+  
   gem 'sqlite3', '~> 1.4'
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem 'rspec-rails'
   gem 'factory_bot'
-  gem 'shoulda-matchers'
+  # gem 'shoulda', '~> 4.0'
+
   # Гем, который использует rspec, чтобы смотреть наш сайт
   gem 'capybara'
   # Гем, который позволяет смотреть, что видит capybara
+  gem 'shoulda-matchers', '~> 5.0'
   gem 'launchy'
+  gem 'guard'
 end
 
 group :test do
