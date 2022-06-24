@@ -9,10 +9,10 @@ FactoryBot.define do
     sequence(:email) { |n| "someguy_#{n}@example.com" }
 
     # всегда создается с флажком false, ничего не генерим
-    is_admin false
+    is_admin { false }
 
     # всегда нулевой
-    balance 0
+    balance { 0 }
 
     # коллбэк - после фазы :build записываем поля паролей, иначе Devise не позволит :create юзера
     after(:build) { |u| u.password_confirmation = u.password = "1" }

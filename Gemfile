@@ -34,7 +34,7 @@ group :development do
   
   gem 'sqlite3', '~> 1.4'
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem 'factory_bot'
+  gem "factory_bot_rails"
   # gem 'shoulda', '~> 4.0'
 
   # Гем, который использует rspec, чтобы смотреть наш сайт
@@ -45,10 +45,10 @@ group :development do
   gem 'guard'
 end
 
-group :test do
-  gem "selenium-webdriver"
-  gem "webdrivers"
-end
+# group :test do
+#   gem "selenium-webdriver"
+#   gem "webdrivers"
+# end
 
 group :production do
   gem "pg", "~> 1.1"
