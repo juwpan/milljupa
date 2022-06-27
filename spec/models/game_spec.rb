@@ -80,4 +80,42 @@ RSpec.describe Game, type: :model do
       end
     end
   end
+
+  # Группа тeстoв на метоd .status модели Game
+
+  describe "Game#status" do
+
+    context "test .status" do
+      before(:each) do
+        game_w_questions.finished_at = Time.now
+        expect(game_w_questions.finished?).to be_truthy
+      end
+
+      it "money" do
+        game_w_questions.take_money!
+
+        expect(game_w_questions.status).to eq(:money)
+      end
+
+      it "won" do
+        game_w_questions.current_level = Question::QUESTION_LEVELS.max + 1
+
+        expect(game_w_questions.status).to eq(:won)
+      end
+
+      it "fail" do
+        game_w_questions.is_failed = true
+
+        expect(game_w_questions.status).to eq(:fail)
+      end
+
+      it "timeout" do
+        game_w_questions.created_at = 45.minutes.ago
+        game_w_questions.is_failed = true
+
+        expect(game_w_questions.status).to eq(:timeout)
+      end
+
+    end
+  end
 end
