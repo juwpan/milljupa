@@ -5,11 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :validatable, :rememberable
 
   # имя не пустое, email валидирует Devise
-  validates :name, presence: true, length: { maximum: 35 }
-  
-  validates :email, length: {maximum: 255}
-  validates :email, uniqueness: true
-  validates :email, format: /\A[a-zA-Z0-9\-_.]+@[a-zA-Z0-9\-_.]+\z/
+  validates :name, presence: true
 
   # поле только булевское (лож/истина) - недопустимо nil
   validates :is_admin, inclusion: {in: [true, false]}, allow_nil: false

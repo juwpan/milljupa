@@ -29,8 +29,8 @@ gem "puma", "~> 5.0"
 group :development do
   gem 'sqlite3', '~> 1.4'
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
-  gem 'rspec-rails'
-  gem 'factory_bot'
+  gem 'rspec-rails', '~> 6.0.0.rc1'
+  gem 'factory_bot_rails'
   gem 'shoulda-matchers'
   # Гем, который использует rspec, чтобы смотреть наш сайт
   gem 'capybara'
