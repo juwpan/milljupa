@@ -117,12 +117,7 @@ RSpec.describe Game, type: :model do
       end
     end
   end
-
-  # текущий, еще неотвеченный вопрос игры
-  # def current_game_question
-  #   game_questions.detect { |q| q.question.level == current_level }
-  # end
-
+  # Тeсты на методы  current_game_question/previous_level модели Game  
   describe "Game#current_game_question/previous_level" do
     context "current_game_question" do
       it "return current_question" do
@@ -135,6 +130,45 @@ RSpec.describe Game, type: :model do
         q = game_w_questions.current_game_question
         game_w_questions.answer_current_question!(q.correct_answer_key)
         expect(game_w_questions.previous_level).to eq(0)
+      end
+    end
+  end
+
+  # Группа тестов answer_current_question
+  describe "Game#answer_current_question!" do
+    context "test answer_current_question!" do
+
+      it "return correct_answer" do
+        q = game_w_questions.current_game_question
+        answer = game_w_questions.answer_current_question!(q.correct_answer_key)
+
+        
+        expect(answer).to be_truthy
+      end
+
+      it "return not_correct_answer" do
+        q = game_w_questions.current_game_question
+        answer = game_w_questions.answer_current_question!("a")
+
+        expect(answer).to be_falsey
+      end
+
+      it "return last_answer" do
+        game_w_questions.current_level = 14
+
+        q = game_w_questions.current_game_question
+
+        game_w_questions.answer_current_question!(q.correct_answer_key)
+
+        expect(game_w_questions.prize).to eq(1000000)
+      end
+
+      it "return timeout" do
+        game_w_questions.created_at = 45.minutes.ago
+        q = game_w_questions.current_game_question
+        answer = game_w_questions.answer_current_question!(q.correct_answer_key)
+
+        expect(answer).to be_falsey
       end
     end
   end
