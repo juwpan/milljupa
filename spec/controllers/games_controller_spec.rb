@@ -31,48 +31,49 @@ RSpec.describe GamesController, type: :controller do
   end
 
   # группа тестов на экшены контроллера, доступных залогиненным юзерам
-  # context 'Usual user' do
-  #   # перед каждым тестом в группе
-  #   before(:each) { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
+  context 'Usual user' do
+    # перед каждым тестом в группе
+    before(:each) { sign_in user } # логиним юзера user с помощью спец. Devise метода sign_in
 
-  #   # юзер может создать новую игру
-  #   it 'creates game' do
-  #     # сперва накидаем вопросов, из чего собирать новую игру
-  #     generate_questions(15)
+    # юзер может создать новую игру
+    it 'creates game' do
+      # сперва накидаем вопросов, из чего собирать новую игру
+      generate_questions(15)
 
-  #     post :create
-  #     game = assigns(:game) # вытаскиваем из контроллера поле @game
+      post :create
+      game = assigns(:game) # вытаскиваем из контроллера поле @game
 
-  #     # проверяем состояние этой игры
-  #     expect(game.finished?).to be_falsey
-  #     expect(game.user).to eq(user)
-  #     # и редирект на страницу этой игры
-  #     expect(response).to redirect_to(game_path(game))
-  #     expect(flash[:notice]).to be
-  #   end
+      # проверяем состояние этой игры
+      expect(game.finished?).to be_falsey
+      expect(game.user).to eq(user)
+      # и редирект на страницу этой игры
+      expect(response).to redirect_to(game_path(game))
+      expect(flash[:notice]).to be
+    end
 
-  #   # юзер видит свою игру
-  #   it '#show game' do
-  #     get :show, id: game_w_questions.id
-  #     game = assigns(:game) # вытаскиваем из контроллера поле @game
-  #     expect(game.finished?).to be_falsey
-  #     expect(game.user).to eq(user)
+    # юзер видит свою игру
+    it '#show game' do
+      get :show, params: { id: game_w_questions.id }
+      game = assigns(:game) # вытаскиваем из контроллера поле @game
+      expect(game.finished?).to be_falsey
+      expect(game.user).to eq(user)
 
-  #     expect(response.status).to eq(200) # должен быть ответ HTTP 200
-  #     expect(response).to render_template('show') # и отрендерить шаблон show
-  #   end
+      expect(response.status).to eq(200) # должен быть ответ HTTP 200
+      expect(response).to render_template('show') # и отрендерить шаблон show
+    end
 
-  #   # юзер отвечает на игру корректно - игра продолжается
-  #   it 'answers correct' do
-  #     # передаем параметр params[:letter]
-  #     put :answer, id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key
-  #     game = assigns(:game)
+    # юзер отвечает на игру корректно - игра продолжается
+    it 'answers correct' do
+      # передаем параметр params[:letter]
+      put :answer, params: { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }
+      
+      game = assigns(:game)
 
-  #     expect(game.finished?).to be_falsey
-  #     expect(game.current_level).to be > 0
-  #     expect(response).to redirect_to(game_path(game))
-  #     expect(flash.empty?).to be_truthy # удачный ответ не заполняет flash
-  #   end
+      expect(game.finished?).to be_falsey
+      expect(game.current_level).to be > 0
+      expect(response).to redirect_to(game_path(game))
+      expect(flash.empty?).to be_truthy # удачный ответ не заполняет flash
+    end
 
   #   # тест на отработку "помощи зала"
   #   it 'uses audience help' do
@@ -91,5 +92,5 @@ RSpec.describe GamesController, type: :controller do
   #     expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
   #     expect(response).to redirect_to(game_path(game))
   #   end
-  # end
+  end
 end
