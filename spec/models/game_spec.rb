@@ -62,9 +62,9 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe 'Game#take_money!' do
+  describe '#take_money!' do
     context 'corect take_money!' do
-      it 'should return prize' do
+      it 'take_money! finishes the game' do
         game = game_w_questions.current_game_question
 
         game_w_questions.answer_current_question!(game.correct_answer_key)
@@ -83,32 +83,32 @@ RSpec.describe Game, type: :model do
 
   # Группа тeстoв на метоd .status модели Game
 
-  describe 'Game#status' do
+  describe '#status' do
     context 'test .status' do
       before(:each) do
         game_w_questions.finished_at = Time.now
         expect(game_w_questions.finished?).to be_truthy
       end
 
-      it 'money' do
+      it ':money' do
         game_w_questions.take_money!
 
         expect(game_w_questions.status).to eq(:money)
       end
 
-      it 'won' do
+      it ':won' do
         game_w_questions.current_level = Question::QUESTION_LEVELS.max + 1
 
         expect(game_w_questions.status).to eq(:won)
       end
 
-      it 'fail' do
+      it ':fail' do
         game_w_questions.is_failed = true
 
         expect(game_w_questions.status).to eq(:fail)
       end
 
-      it 'timeout' do
+      it ':timeout' do
         game_w_questions.created_at = 45.minutes.ago
         game_w_questions.is_failed = true
 
@@ -116,6 +116,7 @@ RSpec.describe Game, type: :model do
       end
     end
   end
+  
   # Тeсты на методы  current_game_question/previous_level модели Game
   describe 'Game#current_game_question/previous_level' do
     context 'current_game_question' do

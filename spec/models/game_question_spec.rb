@@ -47,17 +47,16 @@ RSpec.describe GameQuestion, type: :model do
     end
   end
 
-  describe 'GameQuestion#text/level' do
-    it 'correct .text & .level' do
+  describe '#text & #level' do
+    it 'correct .level & .text delegates' do
       expect(game_question.text).to eq(game_question.question.text)
       expect(game_question.text).to eq(game_question.question.text)
     end
   end
 
   # ключ правильного ответа 'a', 'b', 'c', или 'd' correct_answer_key
-  describe 'GameQuestion#correct_answer_key' do
-    context 'test .correct_answer_key' do
-      it '' do
+  describe '#correct_answer_key' do
+      it 'returns the correct key' do
         expect(game_question.correct_answer_key).to eq('b')
         expect(game_question.correct_answer_key).to_not eq('g')
       end
