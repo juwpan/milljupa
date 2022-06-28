@@ -46,16 +46,16 @@ RSpec.describe Game, type: :model do
     it 'answer correct continues game' do
       # текущий уровень игры и статус
       level = game_w_questions.current_level
-      q = game_w_questions.current_game_question
+      question = game_w_questions.current_game_question
       expect(game_w_questions.status).to eq(:in_progress)
 
-      game_w_questions.answer_current_question!(q.correct_answer_key)
+      game_w_questions.answer_current_question!(question.correct_answer_key)
 
       # перешли на след. уровень
       expect(game_w_questions.current_level).to eq(level + 1)
       # ранее текущий вопрос стал предыдущим
-      expect(game_w_questions.previous_game_question).to eq(q)
-      expect(game_w_questions.current_game_question).not_to eq(q)
+      expect(game_w_questions.previous_game_question).to eq(question)
+      expect(game_w_questions.current_game_question).not_to eq(question)
       # игра продолжается
       expect(game_w_questions.status).to eq(:in_progress)
       expect(game_w_questions.finished?).to be_falsey
@@ -121,15 +121,15 @@ RSpec.describe Game, type: :model do
   describe '#current_game_question & #previous_level' do
     context 'correct .current_game_question & .previous_level' do
       it 'return current_level + 1' do
-        q = game_w_questions.current_game_question
-        game_w_questions.answer_current_question!(q.correct_answer_key)
+        question = game_w_questions.current_game_question
+        game_w_questions.answer_current_question!(question.correct_answer_key)
 
         expect(game_w_questions.current_level).to eq(1)
       end
 
       it 'return previous_level' do
-        q = game_w_questions.current_game_question
-        game_w_questions.answer_current_question!(q.correct_answer_key)
+        question = game_w_questions.current_game_question
+        game_w_questions.answer_current_question!(question.correct_answer_key)
 
         expect(game_w_questions.previous_level).to eq(0)
       end
@@ -139,8 +139,8 @@ RSpec.describe Game, type: :model do
   # Группа тестов answer_current_question
   describe '#answer_current_question!' do
     it 'return correct answer' do
-      q = game_w_questions.current_game_question
-      game_w_questions.answer_current_question!(q.correct_answer_key)
+      question = game_w_questions.current_game_question
+      game_w_questions.answer_current_question!(question.correct_answer_key)
 
       expect(game_w_questions.current_level).to eq 1
       expect(game_w_questions.prize).to eq 0
@@ -148,7 +148,7 @@ RSpec.describe Game, type: :model do
     end
 
     it 'return not correct answer' do
-      q = game_w_questions.current_game_question
+      question = game_w_questions.current_game_question
       game_w_questions.answer_current_question!("a")
 
       expect(game_w_questions.current_level).to eq 0
@@ -157,11 +157,11 @@ RSpec.describe Game, type: :model do
     end
 
     it 'return last_answer' do
-      q = game_w_questions.current_game_question
+      question = game_w_questions.current_game_question
 
       game_w_questions.current_level = Question::QUESTION_LEVELS.max
 
-      game_w_questions.answer_current_question!(q.correct_answer_key)
+      game_w_questions.answer_current_question!(question.correct_answer_key)
 
       expect(game_w_questions.current_level).to eq 15
       expect(game_w_questions.prize).to eq 1000000
@@ -171,9 +171,9 @@ RSpec.describe Game, type: :model do
     it 'return timeout' do
       game_w_questions.created_at = 45.minutes.ago
       
-      q = game_w_questions.current_game_question
+      question = game_w_questions.current_game_question
 
-      answer = game_w_questions.answer_current_question!(q.correct_answer_key)
+      answer = game_w_questions.answer_current_question!(question.correct_answer_key)
 
       expect(game_w_questions.current_level).to eq 0
       expect(game_w_questions.prize).to eq 0
