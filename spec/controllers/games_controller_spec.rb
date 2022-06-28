@@ -97,12 +97,34 @@ RSpec.describe GamesController, type: :controller do
       # создаем новую игру, юзер не прописан, будет создан фабрикой новый
       alien_game = FactoryBot.create(:game_with_questions)
     
-      # пробуем зайти на эту игру текущий залогиненным user
+      # пробуем зайти на эту игру текущим залогиненным user
       get :show, params: { id: alien_game.id }
     
       expect(response.status).not_to eq(200) # статус не 200 ОК
       expect(response).to redirect_to(root_path)
       expect(flash[:alert]).to be # во flash должен быть прописана ошибка
     end
+
+    it 'take money' do
+      game_w_questions.update_attribute(:current_level, 2)
+
+      put :take_money, params: { id: game_w_questions.id }
+      game = assigns(:game)
+
+      expect(game.finished?).to be_truthy
+      expect(game.prize).to eq(200)
+    
+      user.reload
+      expect(user.balance).to eq(200)
+
+      expect(response).to redirect_to(user_path(user))
+      expect(flash[:warning]).to be
+    end
+
+    it 'game redirect game path' do
+      
+    end
+
+    
   end
 end
