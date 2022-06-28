@@ -99,13 +99,14 @@ class Game < ApplicationRecord
   #
   # letter = 'a','b','c' или 'd'
   def answer_current_question!(letter)
-    return false if time_out! || finished? # законченную игру нельзя обновлять
+    return false if time_out! || finished? # законченную игру низя обновлять
 
     if current_game_question.answer_correct?(letter)
-      self.current_level += 1
       if current_level == Question::QUESTION_LEVELS.max
+        self.current_level += 1
         finish_game!(PRIZES[Question::QUESTION_LEVELS.max], false)
       else
+        self.current_level += 1
         save!
       end
 
@@ -116,6 +117,11 @@ class Game < ApplicationRecord
     end
   end
 
+  # Записываем юзеру игровую сумму на счет и завершаем игру,
+  def take_money!
+    return if time_out! || finished? # из законченной или неначатой игры нечего брать
+    finish_game!((previous_level > -1) ? PRIZES[previous_level] : 0, false)
+  end
   # Записываем юзеру игровую сумму на счет и завершаем игру,
   def take_money!
     return if time_out! || finished? # из законченной или неначатой игры нечего брать

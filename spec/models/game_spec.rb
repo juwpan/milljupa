@@ -130,46 +130,54 @@ RSpec.describe Game, type: :model do
       it 'return previous_level' do
         q = game_w_questions.current_game_question
         game_w_questions.answer_current_question!(q.correct_answer_key)
-        
+
         expect(game_w_questions.previous_level).to eq(0)
       end
     end
   end
 
   # Группа тестов answer_current_question
-  describe 'Game#answer_current_question!' do
-    context 'test answer_current_question!' do
-      it 'return correct_answer' do
-        q = game_w_questions.current_game_question
-        answer = game_w_questions.answer_current_question!(q.correct_answer_key)
+  describe '#answer_current_question!' do
+    it 'return correct answer' do
+      q = game_w_questions.current_game_question
+      game_w_questions.answer_current_question!(q.correct_answer_key)
 
-        expect(answer).to be_truthy
-      end
+      expect(game_w_questions.current_level).to eq 1
+      expect(game_w_questions.prize).to eq 0
+      expect(game_w_questions.status).to eq :in_progress
+    end
 
-      it 'return not_correct_answer' do
-        q = game_w_questions.current_game_question
-        answer = game_w_questions.answer_current_question!('a')
+    it 'return not correct answer' do
+      q = game_w_questions.current_game_question
+      game_w_questions.answer_current_question!("a")
 
-        expect(answer).to be_falsey
-      end
+      expect(game_w_questions.current_level).to eq 0
+      expect(game_w_questions.prize).to eq 0
+      expect(game_w_questions.status).to eq :fail
+    end
 
-      it 'return last_answer' do
-        game_w_questions.current_level = Question::QUESTION_LEVELS.max - 1
+    it 'return last_answer' do
+      q = game_w_questions.current_game_question
 
-        q = game_w_questions.current_game_question
+      game_w_questions.current_level = Question::QUESTION_LEVELS.max
 
-        game_w_questions.answer_current_question!(q.correct_answer_key)
+      game_w_questions.answer_current_question!(q.correct_answer_key)
 
-        expect(game_w_questions.prize).to eq(1_000_000)
-      end
+      expect(game_w_questions.current_level).to eq 15
+      expect(game_w_questions.prize).to eq 1000000
+      expect(game_w_questions.status).to eq :won
+    end
 
-      it 'return timeout' do
-        game_w_questions.created_at = 45.minutes.ago
-        q = game_w_questions.current_game_question
-        answer = game_w_questions.answer_current_question!(q.correct_answer_key)
+    it 'return timeout' do
+      game_w_questions.created_at = 45.minutes.ago
+      
+      q = game_w_questions.current_game_question
 
-        expect(answer).to be_falsey
-      end
+      answer = game_w_questions.answer_current_question!(q.correct_answer_key)
+
+      expect(game_w_questions.current_level).to eq 0
+      expect(game_w_questions.prize).to eq 0
+      expect(game_w_questions.status).to eq :timeout
     end
   end
 end
