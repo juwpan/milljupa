@@ -1,4 +1,6 @@
-require_relative "boot"
+# frozen_string_literal: true
+
+require_relative 'boot'
 
 require 'rails/all'
 
@@ -9,7 +11,7 @@ Bundler.require(*Rails.groups)
 module Billionaire
   class Application < Rails::Application
     config.load_defaults 7.0
-    config.assets.paths << Rails.root.join("app", "assets", "fonts")
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
 

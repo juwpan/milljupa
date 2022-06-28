@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (c) goodprogrammer.ru
 
 require 'rails_helper'
@@ -24,8 +26,8 @@ RSpec.describe Game, type: :model do
       # создaли игру, обернули в блок, на который накладываем проверки
       expect {
         game = Game.create_game_for_user!(user)
-      }.to change(Game, :count).by(1).and(# проверка: Game.count изменился на 1 (создали в базе 1 игру)
-        change(GameQuestion, :count).by(15).and(# GameQuestion.count +15
+      }.to change(Game, :count).by(1).and( # проверка: Game.count изменился на 1 (создали в базе 1 игру)
+        change(GameQuestion, :count).by(15).and( # GameQuestion.count +15
           change(Question, :count).by(0) # Game.count не должен измениться
         )
       )
@@ -37,11 +39,9 @@ RSpec.describe Game, type: :model do
       expect(game.game_questions.map(&:level)).to eq (0..14).to_a
     end
   end
-
-
+  
   # тесты на основную игровую логику
   context 'game mechanics' do
-
     # правильный ответ должен продолжать игру
     it 'answer correct continues game' do
       # текущий уровень игры и статус
@@ -62,9 +62,9 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe "Game#take_money!" do
-    context "corect take_money!" do
-      it "should return prize" do
+  describe 'Game#take_money!' do
+    context 'corect take_money!' do
+      it 'should return prize' do
         game = game_w_questions.current_game_question
 
         game_w_questions.answer_current_question!(game.correct_answer_key)
@@ -83,33 +83,32 @@ RSpec.describe Game, type: :model do
 
   # Группа тeстoв на метоd .status модели Game
 
-  describe "Game#status" do
-
-    context "test .status" do
+  describe 'Game#status' do
+    context 'test .status' do
       before(:each) do
         game_w_questions.finished_at = Time.now
         expect(game_w_questions.finished?).to be_truthy
       end
 
-      it "money" do
+      it 'money' do
         game_w_questions.take_money!
 
         expect(game_w_questions.status).to eq(:money)
       end
 
-      it "won" do
+      it 'won' do
         game_w_questions.current_level = Question::QUESTION_LEVELS.max + 1
 
         expect(game_w_questions.status).to eq(:won)
       end
 
-      it "fail" do
+      it 'fail' do
         game_w_questions.is_failed = true
 
         expect(game_w_questions.status).to eq(:fail)
       end
 
-      it "timeout" do
+      it 'timeout' do
         game_w_questions.created_at = 45.minutes.ago
         game_w_questions.is_failed = true
 
@@ -117,16 +116,16 @@ RSpec.describe Game, type: :model do
       end
     end
   end
-  # Тeсты на методы  current_game_question/previous_level модели Game  
-  describe "Game#current_game_question/previous_level" do
-    context "current_game_question" do
-      it "return current_question" do
+  # Тeсты на методы  current_game_question/previous_level модели Game
+  describe 'Game#current_game_question/previous_level' do
+    context 'current_game_question' do
+      it 'return current_question' do
         q = game_w_questions.current_game_question
         game_w_questions.answer_current_question!(q.correct_answer_key)
         expect(game_w_questions.current_level).to eq(1)
       end
 
-      it "return previous_level" do
+      it 'return previous_level' do
         q = game_w_questions.current_game_question
         game_w_questions.answer_current_question!(q.correct_answer_key)
         expect(game_w_questions.previous_level).to eq(0)
@@ -135,35 +134,33 @@ RSpec.describe Game, type: :model do
   end
 
   # Группа тестов answer_current_question
-  describe "Game#answer_current_question!" do
-    context "test answer_current_question!" do
-
-      it "return correct_answer" do
+  describe 'Game#answer_current_question!' do
+    context 'test answer_current_question!' do
+      it 'return correct_answer' do
         q = game_w_questions.current_game_question
         answer = game_w_questions.answer_current_question!(q.correct_answer_key)
 
-        
         expect(answer).to be_truthy
       end
 
-      it "return not_correct_answer" do
+      it 'return not_correct_answer' do
         q = game_w_questions.current_game_question
-        answer = game_w_questions.answer_current_question!("a")
+        answer = game_w_questions.answer_current_question!('a')
 
         expect(answer).to be_falsey
       end
 
-      it "return last_answer" do
+      it 'return last_answer' do
         game_w_questions.current_level = 14
 
         q = game_w_questions.current_game_question
 
         game_w_questions.answer_current_question!(q.correct_answer_key)
 
-        expect(game_w_questions.prize).to eq(1000000)
+        expect(game_w_questions.prize).to eq(1_000_000)
       end
 
-      it "return timeout" do
+      it 'return timeout' do
         game_w_questions.created_at = 45.minutes.ago
         q = game_w_questions.current_game_question
         answer = game_w_questions.answer_current_question!(q.correct_answer_key)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #  (c) goodprogrammer.ru
 #
 # Прикручиваем к юзерам девайз

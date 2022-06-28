@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # (c) goodprogrammer.ru
 
 require 'rails_helper'
@@ -5,7 +7,6 @@ require 'rails_helper'
 # Тестовый сценарий для модели игрового вопроса,
 # в идеале весь наш функционал (все методы) должны быть протестированы.
 RSpec.describe GameQuestion, type: :model do
-
   # задаем локальную переменную game_question, доступную во всех тестах этого сценария
   # она будет создана на фабрике заново для каждого блока it, где она вызывается
   let(:game_question) { FactoryBot.create(:game_question, a: 2, b: 1, c: 4, d: 3) }
@@ -13,10 +14,10 @@ RSpec.describe GameQuestion, type: :model do
   # группа тестов на игровое состояние объекта вопроса
   context 'game status' do
     it 'correct .variants' do
-      expect(game_question.variants).to eq({'a' => game_question.question.answer2,
-                                            'b' => game_question.question.answer1,
-                                            'c' => game_question.question.answer4,
-                                            'd' => game_question.question.answer3})
+      expect(game_question.variants).to eq({ 'a' => game_question.question.answer2,
+                                             'b' => game_question.question.answer1,
+                                             'c' => game_question.question.answer4,
+                                             'd' => game_question.question.answer3 })
     end
 
     it 'correct .answer_correct?' do
@@ -46,20 +47,19 @@ RSpec.describe GameQuestion, type: :model do
     end
   end
 
-  describe "GameQuestion#text/level" do
-    it "correct .text & .level" do
+  describe 'GameQuestion#text/level' do
+    it 'correct .text & .level' do
       expect(game_question.text).to eq(game_question.question.text)
       expect(game_question.text).to eq(game_question.question.text)
     end
   end
 
-
   # ключ правильного ответа 'a', 'b', 'c', или 'd' correct_answer_key
-  describe "GameQuestion#correct_answer_key" do
-    context "test .correct_answer_key" do
-      it "" do
-        expect(game_question.correct_answer_key).to eq("b")
-        expect(game_question.correct_answer_key).to_not eq("g")
+  describe 'GameQuestion#correct_answer_key' do
+    context 'test .correct_answer_key' do
+      it '' do
+        expect(game_question.correct_answer_key).to eq('b')
+        expect(game_question.correct_answer_key).to_not eq('g')
       end
     end
   end
