@@ -121,8 +121,28 @@ RSpec.describe GamesController, type: :controller do
       expect(flash[:warning]).to be
     end
 
-    it 'game redirect game path' do
-      
+
+    # Redirected to http://localhost:3000/games/6
+    # Filter chain halted as :goto_game_in_progress! rendered or redirected
+    # Completed 302 Found in 3ms (ActiveRecord: 0.2ms | Allocations: 1162)
+
+
+    # Started GET "/games/6" for ::1 at 2022-06-29 01:31:25 +0400
+    # Processing by GamesController#show as TURBO_STREAM
+
+    it 'try to create second game' do
+      # убедились что есть игра в работе
+      expect(game_w_questions.finished?).to be_falsey
+    
+      # отправляем запрос на создание, убеждаемся что новых Game не создалось
+      expect { post :create }.to change(Game, :count).by(0)
+    
+      game = assigns(:game) # вытаскиваем из контроллера поле @game
+      expect(game).to be_nil
+    
+      # и редирект на страницу старой игры
+      expect(response).to redirect_to(game_path(game_w_questions))
+      expect(flash[:alert]).to be
     end
 
     
