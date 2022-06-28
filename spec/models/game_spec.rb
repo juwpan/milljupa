@@ -151,7 +151,7 @@ RSpec.describe Game, type: :model do
       end
 
       it 'return last_answer' do
-        game_w_questions.current_level = 14
+        game_w_questions.current_level = Question::QUESTION_LEVELS.max - 1
 
         q = game_w_questions.current_game_question
 
