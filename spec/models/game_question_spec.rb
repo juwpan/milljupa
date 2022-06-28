@@ -56,10 +56,9 @@ RSpec.describe GameQuestion, type: :model do
 
   # ключ правильного ответа 'a', 'b', 'c', или 'd' correct_answer_key
   describe '#correct_answer_key' do
-      it 'returns the correct key' do
-        expect(game_question.correct_answer_key).to eq('b')
-        expect(game_question.correct_answer_key).to_not eq('g')
-      end
+    it 'returns the correct key' do
+      expect(game_question.correct_answer_key).to eq('b')
+      expect(game_question.correct_answer_key).to_not eq('g')
     end
   end
 end
