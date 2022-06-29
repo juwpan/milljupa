@@ -117,16 +117,18 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  # Тeсты на методы  current_game_question/previous_level модели Game
-  describe '#current_game_question & #previous_level' do
-    context 'correct .current_game_question & .previous_level' do
-      it 'return current_level + 1' do
-        question = game_w_questions.current_game_question
-        game_w_questions.answer_current_question!(question.correct_answer_key)
-
-        expect(game_w_questions.current_level).to eq(1)
+  # Тeст на метод  current_game_question модели Game
+  describe '#current_game_question' do
+    context 'correct .current_game_question' do
+      it 'return current_level' do
+        expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions.first)
       end
+    end
+  end
 
+  # Тeст на метод  previous_level модели Game
+  describe '#previous_level' do
+    context 'correct .previous_level' do
       it 'return previous_level' do
         question = game_w_questions.current_game_question
         game_w_questions.answer_current_question!(question.correct_answer_key)
