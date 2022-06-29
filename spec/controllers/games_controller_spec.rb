@@ -93,7 +93,7 @@ RSpec.describe GamesController, type: :controller do
       expect(response).to redirect_to(game_path(game))
     end
 
-    it 'hint can be used' do
+    it 'hint 50/50 can be used' do
       expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
       expect(game_w_questions.fifty_fifty_used).to be_falsey
 
@@ -108,6 +108,7 @@ RSpec.describe GamesController, type: :controller do
 
       expect(variants).to include('d')
       expect(variants.size).to eq(2)
+      expect(response).to redirect_to(game_path(game))
     end
 
     it '#show alien game' do
