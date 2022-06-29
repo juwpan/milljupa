@@ -93,6 +93,23 @@ RSpec.describe GamesController, type: :controller do
       expect(response).to redirect_to(game_path(game))
     end
 
+    it 'hint can be used' do
+      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
+      expect(game_w_questions.fifty_fifty_used).to be_falsey
+
+      put :help, params: { id: game_w_questions.id, help_type: :fifty_fifty}
+      game = assigns(:game)
+
+      expect(game.finished?).to be_falsey
+      expect(game.fifty_fifty_used).to be_truthy
+      expect(game.current_game_question.help_hash[:fifty_fifty]).to be
+
+      variants = game.current_game_question.help_hash[:fifty_fifty]
+
+      expect(variants).to include('d')
+      expect(variants.size).to eq(2)
+    end
+
     it '#show alien game' do
       # создаем новую игру, юзер не прописан, будет создан фабрикой новый
       alien_game = FactoryBot.create(:game_with_questions)

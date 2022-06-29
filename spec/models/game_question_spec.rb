@@ -35,7 +35,7 @@ RSpec.describe GameQuestion, type: :model do
   #
 
   describe "#help_hash" do
-    it "" do
+    it "correct .help_hash" do
       expect(game_question.help_hash).to eq ({})
 
       game_question.help_hash[:hint] = 'a'
