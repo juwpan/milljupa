@@ -34,6 +34,20 @@ RSpec.describe GameQuestion, type: :model do
   # }
   #
 
+  describe "#help_hash" do
+    it "" do
+      expect(game_question.help_hash).to eq ({})
+
+      game_question.help_hash[:hint] = 'a'
+      game_question.help_hash['hint'] = 'c'
+      
+      expect(game_question.save).to be_truthy
+      bd = GameQuestion.find(game_question.id)
+
+      expect(bd.help_hash).to eq({:hint=>"a", "hint"=>"c"})
+    end
+  end
+
   context 'user helpers' do
     it 'correct audience_help' do
       expect(game_question.help_hash).not_to include(:audience_help)
