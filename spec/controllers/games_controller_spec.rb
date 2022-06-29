@@ -160,58 +160,98 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#help' do
-    # тест на отработку "помощи зала"
-    it 'uses audience help' do
-      # сперва проверяем что в подсказках текущего вопроса пусто
-      expect(game_w_questions.current_game_question.help_hash[:audience_help]).not_to be
-      expect(game_w_questions.audience_help_used).to be_falsey
+    context 'Usual user' do
+      before (:each) { sign_in user }
+      let(:game) { assigns(:game) }
 
-      # фигачим запрос в контроллен с нужным типом
-      put :help, params: { id: game_w_questions.id, help_type: :audience_help }
-      game = assigns(:game)
+      # тест на отработку "помощи зала"
+      it 'uses audience help' do
+        # сперва проверяем что в подсказках текущего вопроса пусто
+        expect(game_w_questions.current_game_question.help_hash[:audience_help]).not_to be
+        expect(game_w_questions.audience_help_used).to be_falsey
 
-      # проверяем, что игра не закончилась, что флажок установился, и подсказка записалась
-      expect(game.finished?).to be_falsey
-      expect(game.audience_help_used).to be_truthy
-      expect(game.current_game_question.help_hash[:audience_help]).to be
-      expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
-      expect(response).to redirect_to(game_path(game))
-    end
+        # фигачим запрос в контроллен с нужным типом
+        put :help, params: { id: game_w_questions.id, help_type: :audience_help }
 
-    it 'hint 50/50 can be used' do
-      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
-      expect(game_w_questions.fifty_fifty_used).to be_falsey
+        # проверяем, что игра не закончилась, что флажок установился, и подсказка записалась
+        expect(game.finished?).to be_falsey
+        expect(game.audience_help_used).to be_truthy
+        expect(game.current_game_question.help_hash[:audience_help]).to be
+        expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
+        expect(response).to redirect_to(game_path(game))
+      end
 
-      put :help, params: { id: game_w_questions.id, help_type: :fifty_fifty}
-      game = assigns(:game)
+      it 'hint 50/50 can be used' do
+        expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
+        expect(game_w_questions.fifty_fifty_used).to be_falsey
 
-      expect(game.finished?).to be_falsey
-      expect(game.fifty_fifty_used).to be_truthy
-      expect(game.current_game_question.help_hash[:fifty_fifty]).to be
+        put :help, params: { id: game_w_questions.id, help_type: :fifty_fifty}
 
-      variants = game.current_game_question.help_hash[:fifty_fifty]
+        expect(game.finished?).to be_falsey
+        expect(game.fifty_fifty_used).to be_truthy
+        expect(game.current_game_question.help_hash[:fifty_fifty]).to be
 
-      expect(variants).to include('d')
-      expect(variants.size).to eq(2)
-      expect(response).to redirect_to(game_path(game))
-    end
+        variants = game.current_game_question.help_hash[:fifty_fifty]
 
-    it '' do
+        expect(variants).to include('d')
+        expect(variants.size).to eq(2)
+        expect(response).to redirect_to(game_path(game))
+      end
+
+      # it 'friend_call' do
+      #   expect(game_w_questions.current_game_question.help_hash[:friend_call]).not_to be
+      #   expect(game_w_questions.friend_call_used).to be_falsey
+
+      #   put :help, params: { id: game_w_questions.id, help_type: :friend_call}
+      
+      #   expect(game.finished?).to be_falsey
+      #   expect(game.friend_call_used).to be_truthy
+      #   expect(game.current_game_question.help_hash[:friend_call]).to be
+        
+      #   variants = game.current_game_question.help_hash[:friend_call]
+      #   expect(variants.keys).to eq('a')
+        
+      #   # expect(response).to redirect_to(game_path(game))
+      # end
     end
   end
 
-  #   it 'take money' do
-  #     game_w_questions.update_attribute(:current_level, 2)
+  describe '#take_money'
 
-  #     put :take_money, params: { id: game_w_questions.id }
-  #     game = assigns(:game)
+    context 'Guest' do
+      before { get :take_money, params: { id: game_w_questions.id }}
 
-  #     expect(game.finished?).to be_truthy
-  #     expect(game.prize).to eq(200)
-    
-  #     user.reload
-  #     expect(user.balance).to eq(200)
+      it 'status 302' do
+        expect(response.status).to eq(302)
+      end
 
-  #     expect(response).to redirect_to(user_path(user))
-  #     expect(flash[:warning]).to be
+      it 'reditect log_in' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
+      it 'error' do
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
+      end
+    end
+
+    context 'User usual' do
+      before (:each) { sign_in user }
+      let(:game) { assigns(:game) }
+
+      it 'take money' do
+        game_w_questions.update_attribute(:current_level, 2)
+
+        put :take_money, params: { id: game_w_questions.id }
+        game = assigns(:game)
+
+        expect(game.finished?).to be_truthy
+        expect(game.prize).to eq(200)
+      
+        user.reload
+        expect(user.balance).to eq(200)
+
+        expect(response).to redirect_to(user_path(user))
+        expect(flash[:warning]).to be
+      end 
+  end
 end
