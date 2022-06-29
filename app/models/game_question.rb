@@ -83,12 +83,12 @@ class GameQuestion < ApplicationRecord
   end
 
   # Добавляем в help_hash подсказку друга и сохраняем объект
-  # def add_friend_call
-  #   # массив ключей
-  #   keys_to_use = keys_to_use_in_help
-  #   help_hash[:friend_call] = GameHelpGenerator.friend_call(keys_to_use, correct_answer_key)
-  #   save
-  # end
+  def add_friend_call
+    # массив ключей
+    keys_to_use = keys_to_use_in_help
+    help_hash[:friend_call] = GameHelpGenerator.friend_call(keys_to_use, correct_answer_key)
+    save
+  end
 
   private
 
