@@ -120,7 +120,7 @@ RSpec.describe Game, type: :model do
   # Тeст на метод  current_game_question модели Game
   describe '#current_game_question' do
     context 'correct .current_game_question' do
-      it 'return current_level' do
+      it 'return game question unanswered' do
         expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions.first)
       end
     end
