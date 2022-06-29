@@ -64,13 +64,24 @@ RSpec.describe GameQuestion, type: :model do
       expect(game_question.help_hash).not_to include(:fifty_fifty)
 
       game_question.add_fifty_fifty
-
       expect(game_question.help_hash).to include(:fifty_fifty)
 
-      variants_answer = game_question.help_hash[:fifty_fifty]
+      variant = game_question.help_hash[:fifty_fifty]
 
-      expect(variants_answer).to include('b')
-      expect(variants_answer.size).to eq(2)
+      expect(variant).to include('b')
+      expect(variant.size).to eq(2)
+    end
+
+    it "correct add_friend_call" do
+      expect(game_question.help_hash).not_to include(:friend_call)
+
+      game_question.add_friend_call
+      expect(game_question.help_hash).to include(:friend_call)
+
+      variant = game_question.help_hash[:friend_call]
+
+      expect(game_question.help_hash).to include({ friend_call: variant })
+      expect(variant).to be_an_instance_of(String)
     end
   end
 
