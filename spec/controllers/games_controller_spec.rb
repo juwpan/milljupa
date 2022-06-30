@@ -251,9 +251,6 @@ RSpec.describe GamesController, type: :controller do
       end
       let(:game) { assigns(:game) }
       
-
-    
-
       it 'return game finish' do
         expect(game.finished?).to be_truthy
       end
