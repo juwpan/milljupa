@@ -19,7 +19,7 @@ RSpec.describe GamesController, type: :controller do
 
   describe '#show' do
 
-    context 'Guest' do
+    context 'when Guest' do
       before { get :show, params: { id: game_w_questions.id }}
 
       it 'status 302' do
@@ -75,100 +75,131 @@ RSpec.describe GamesController, type: :controller do
     end
   end
 
-  # describe '#create' do
-  #   context 'Guest' do
-  #     before { get :create, params: { id: game_w_questions.id }}
+  describe '#create' do
+    context 'when Guest' do
+      before { get :create, params: { id: game_w_questions.id }}
 
-  #     it 'status 302' do
-  #       expect(response.status).to eq(302)
-  #     end
+      it 'status 302' do
+        expect(response.status).to eq(302)
+      end
 
-  #     it 'reditect log_in' do
-  #       expect(response).to redirect_to(new_user_session_path)
-  #     end
+      it 'reditect log_in' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
 
-  #     it 'error' do
-  #       expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
-  #     end
-  #   end
+      it 'error' do
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
+      end
+    end
+    
+    context 'when user is logged in and create new game' do
+      before(:each) do
+        sign_in user
+        generate_questions(15)
+        post :create
+      end
+      let!(:game) { assigns(:game) }
 
-  #   context "Usual user" do
-  #     before(:each) { sign_in user }
-  #     let(:game) { assigns(:game) }
+      it 'return game continues' do
+        expect(game.finished?).to be_falsey
+      end
 
-  #     it 'creates game' do
-  #       # сперва накидаем вопросов, из чего собирать новую игру
-  #       generate_questions(15)
+      it 'return user game' do
+        expect(game.user).to eq(user)
+      end
 
-  #       post :create
-        
-  #       # проверяем состояние этой игры
-  #       expect(game.finished?).to be_falsey
-  #       expect(game.user).to eq(user)
+      it 'return redirect_to game_path(game)' do
+        expect(response).to redirect_to(game_path(game))
+      end
 
-  #       # и редирект на страницу этой игры
-  #       expect(response).to redirect_to(game_path(game))
-  #       expect(flash[:notice]).to be
-  #     end
+      it 'return user notice' do
+        expect(flash[:notice]).to be
+      end
+    end
+  end
 
-  #     it 'try to create second game' do
-  #       # убедились что есть игра в работе
-  #       expect(game_w_questions.finished?).to be_falsey
-      
-  #       # отправляем запрос на создание, убеждаемся что новых Game не создалось
-  #       expect { post :create }.to change(Game, :count).by(0)
-      
-  #       expect(game).to be_nil
-      
-  #       # и редирект на страницу старой игры
-  #       expect(response).to redirect_to(game_path(game_w_questions))
-  #       expect(flash[:alert]).to eq(I18n.t('controllers.games.game_not_finished'))
-  #     end
-  #   end
-
-  # end
 
   # # юзер отвечает на игру корректно - игра продолжается
-  # describe '#answer' do
-  #   context 'Guest' do
-  #     before { get :answer, params: { id: game_w_questions.id }}
+  describe '#answer' do
 
-  #     it 'status 302' do
-  #       expect(response.status).to eq(302)
-  #     end
+    context 'when Guest' do
+      before { get :answer, params: { id: game_w_questions.id }}
 
-  #     it 'reditect log_in' do
-  #       expect(response).to redirect_to(new_user_session_path)
-  #     end
+      it 'status 302' do
+        expect(response.status).to eq(302)
+      end
 
-  #     it 'error' do
-  #       expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
-  #     end
-  #   end
+      it 'reditect log_in' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
 
-  #   context 'Usual user' do
-  #     before(:each) { sign_in user }
-  #     let(:game) { assigns(:game) }
+      it 'error' do
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
+      end
+    end
 
-  #     it 'answers correct' do
-  #       # передаем параметр params[:letter]
-  #       put :answer, params: { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }
-        
-  #       expect(game.finished?).to be_falsey
-  #       expect(game.current_level).to be > 0
-  #       expect(response).to redirect_to(game_path(game))
-  #       expect(flash.empty?).to be_truthy # удачный ответ не заполняет flash
-  #     end
+    context 'when user is logged in and answer correct' do
+      before(:each) { sign_in user }
+      before { put :answer, params: { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }}
+      let!(:game) { assigns(:game) }
 
-  #     it 'incorrect answer' do
-  #       put :answer, params: { id: game_w_questions.id, letter: 'a' }
+      it 'return game continues' do
+        expect(game.finished?).to be_falsey
+      end
 
-  #       expect(game.finished?).to be_truthy
-  #       expect(game.current_level).to be 0
-  #       expect(response).to redirect_to user_path(user)     
-  #       expect(flash[:alert]).to be
-  #     end
-  #   end
+      it 'return user game' do
+        expect(game.user).to eq(user)
+      end
+
+      it 'return current_level > 0' do
+        expect(game.current_level).to be > 0
+      end
+
+      it 'return redirect_to game_path(game)' do
+        expect(response).to redirect_to(game_path(game))
+      end
+
+      it 'return answers correct' do
+        expect(flash.empty?).to be_truthy
+      end
+    end
+      
+    context 'when user is logged in and answer incorect' do
+      before(:each) { sign_in user }
+      let(:game) { assigns(:game) }
+
+      before { put :answer, params: { id: game_w_questions.id, letter: 'a' }}
+      
+      it 'return game over' do
+        expect(game.finished?).to be_truthy
+      end
+
+      it 'return level = 0' do
+        expect(game.current_level).to be 0
+      end
+
+      it 'return page user_path(user)' do
+        expect(response).to redirect_to user_path(user) 
+      end
+      
+      it 'return alert' do
+        expect(flash[:alert]).to be
+      end
+    end
+  end
+
+      # context 'incorrect answer'
+      #   before { put :answer, params: { id: game_w_questions.id, letter: 'a' }}
+
+      # it 'incorrect answer' do
+      #   put :answer, params: { id: game_w_questions.id, letter: 'a' }
+
+      #   expect(game.finished?).to be_truthy
+      #   expect(game.current_level).to be 0
+      #   expect(response).to redirect_to user_path(user)     
+      #   expect(flash[:alert]).to be
+      # end
+    # end
   # end
 
   # describe '#help' do
