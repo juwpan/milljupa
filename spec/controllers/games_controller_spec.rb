@@ -118,8 +118,6 @@ RSpec.describe GamesController, type: :controller do
     end
   end
 
-
-  # # юзер отвечает на игру корректно - игра продолжается
   describe '#answer' do
 
     context 'when Guest' do
@@ -188,113 +186,94 @@ RSpec.describe GamesController, type: :controller do
     end
   end
 
-      # context 'incorrect answer'
-      #   before { put :answer, params: { id: game_w_questions.id, letter: 'a' }}
+  describe '#help' do
+    before (:each) { sign_in user }
+    let(:game) { assigns(:game) }
 
-      # it 'incorrect answer' do
-      #   put :answer, params: { id: game_w_questions.id, letter: 'a' }
+    # тест на отработку "помощи зала"
+    it 'uses audience help' do
+      # сперва проверяем что в подсказках текущего вопроса пусто
+      expect(game_w_questions.current_game_question.help_hash[:audience_help]).not_to be
+      expect(game_w_questions.audience_help_used).to be_falsey
 
-      #   expect(game.finished?).to be_truthy
-      #   expect(game.current_level).to be 0
-      #   expect(response).to redirect_to user_path(user)     
-      #   expect(flash[:alert]).to be
-      # end
-    # end
-  # end
+      # фигачим запрос в контроллен с нужным типом
+      put :help, params: { id: game_w_questions.id, help_type: :audience_help }
 
-  # describe '#help' do
-  #   context 'Usual user' do
-  #     before (:each) { sign_in user }
-  #     let(:game) { assigns(:game) }
+      # проверяем, что игра не закончилась, что флажок установился, и подсказка записалась
+      expect(game.finished?).to be_falsey
+      expect(game.audience_help_used).to be_truthy
+      expect(game.current_game_question.help_hash[:audience_help]).to be
+      expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
+      expect(response).to redirect_to(game_path(game))
+    end
 
-  #     # тест на отработку "помощи зала"
-  #     it 'uses audience help' do
-  #       # сперва проверяем что в подсказках текущего вопроса пусто
-  #       expect(game_w_questions.current_game_question.help_hash[:audience_help]).not_to be
-  #       expect(game_w_questions.audience_help_used).to be_falsey
+    it 'hint 50/50 can be used' do
+      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
+      expect(game_w_questions.fifty_fifty_used).to be_falsey
 
-  #       # фигачим запрос в контроллен с нужным типом
-  #       put :help, params: { id: game_w_questions.id, help_type: :audience_help }
+      put :help, params: { id: game_w_questions.id, help_type: :fifty_fifty}
 
-  #       # проверяем, что игра не закончилась, что флажок установился, и подсказка записалась
-  #       expect(game.finished?).to be_falsey
-  #       expect(game.audience_help_used).to be_truthy
-  #       expect(game.current_game_question.help_hash[:audience_help]).to be
-  #       expect(game.current_game_question.help_hash[:audience_help].keys).to contain_exactly('a', 'b', 'c', 'd')
-  #       expect(response).to redirect_to(game_path(game))
-  #     end
+      expect(game.finished?).to be_falsey
+      expect(game.fifty_fifty_used).to be_truthy
+      expect(game.current_game_question.help_hash[:fifty_fifty]).to be
 
-  #     it 'hint 50/50 can be used' do
-  #       expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).not_to be
-  #       expect(game_w_questions.fifty_fifty_used).to be_falsey
+      variants = game.current_game_question.help_hash[:fifty_fifty]
 
-  #       put :help, params: { id: game_w_questions.id, help_type: :fifty_fifty}
+      expect(variants).to include('d')
+      expect(variants.size).to eq(2)
+      expect(response).to redirect_to(game_path(game))
+    end
+  end
 
-  #       expect(game.finished?).to be_falsey
-  #       expect(game.fifty_fifty_used).to be_truthy
-  #       expect(game.current_game_question.help_hash[:fifty_fifty]).to be
+  describe '#take_money' do
 
-  #       variants = game.current_game_question.help_hash[:fifty_fifty]
+    context 'when Guest' do
+      before { get :take_money, params: { id: game_w_questions.id }}
 
-  #       expect(variants).to include('d')
-  #       expect(variants.size).to eq(2)
-  #       expect(response).to redirect_to(game_path(game))
-  #     end
+      it 'status 302' do
+        expect(response.status).to eq(302)
+      end
 
-  #     # it 'friend_call' do
-  #     #   expect(game_w_questions.current_game_question.help_hash[:friend_call]).not_to be
-  #     #   expect(game_w_questions.friend_call_used).to be_falsey
+      it 'reditect log_in' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
 
-  #     #   put :help, params: { id: game_w_questions.id, help_type: :friend_call}
+      it 'error' do
+        expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
+      end
+    end
+
+    context 'when user log in and take money' do
+      before (:each) do 
+        sign_in user 
+        game_w_questions.update_attribute(:current_level, 2)
+        put :take_money, params: { id: game_w_questions.id }
+      end
+      let(:game) { assigns(:game) }
       
-  #     #   expect(game.finished?).to be_falsey
-  #     #   expect(game.friend_call_used).to be_truthy
-  #     #   expect(game.current_game_question.help_hash[:friend_call]).to be
-        
-  #     #   variants = game.current_game_question.help_hash[:friend_call]
-  #     #   expect(variants.keys).to eq('a')
-        
-  #     #   # expect(response).to redirect_to(game_path(game))
-  #     # end
-  #   end
-  # end
 
-  # describe '#take_money'
+    
 
-  #   context 'Guest' do
-  #     before { get :take_money, params: { id: game_w_questions.id }}
+      it 'return game finish' do
+        expect(game.finished?).to be_truthy
+      end
 
-  #     it 'status 302' do
-  #       expect(response.status).to eq(302)
-  #     end
-
-  #     it 'reditect log_in' do
-  #       expect(response).to redirect_to(new_user_session_path)
-  #     end
-
-  #     it 'error' do
-  #       expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
-  #     end
-  #   end
-
-  #   context 'User usual' do
-  #     before (:each) { sign_in user }
-  #     let(:game) { assigns(:game) }
-
-  #     it 'take money' do
-  #       game_w_questions.update_attribute(:current_level, 2)
-
-  #       put :take_money, params: { id: game_w_questions.id }
-  #       game = assigns(:game)
-
-  #       expect(game.finished?).to be_truthy
-  #       expect(game.prize).to eq(200)
+      it 'return game prize' do
+        expect(game.prize).to eq(200)
+      end
       
-  #       user.reload
-  #       expect(user.balance).to eq(200)
+      it 'return user balance' do
+        user.reload
+        expect(user.balance).to eq(200)
+      end
 
-  #       expect(response).to redirect_to(user_path(user))
-  #       expect(flash[:warning]).to be
-  #     end 
-  # end
+      it 'return page user_path(user)' do
+        expect(response).to redirect_to(user_path(user))
+      end
+
+      it 'return warning flash' do
+        expect(flash[:warning]).to be
+      end
+    end 
+  end
 end
