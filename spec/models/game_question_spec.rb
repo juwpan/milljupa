@@ -48,18 +48,6 @@ RSpec.describe GameQuestion, type: :model do
     end
   end
 
-  # describe 'user helpers' do
-
-  #   it 'correct audience_help' do
-  #     expect(game_question.help_hash).not_to include(:audience_help)
-
-  #     game_question.add_audience_help
-
-  #     expect(game_question.help_hash).to include(:audience_help)
-
-  #     ah = game_question.help_hash[:audience_help]
-  #     expect(ah.keys).to contain_exactly('a', 'b', 'c', 'd')
-  #   end
   describe '#add_fifty_fifty' do
     context 'when fifty_fifty not used' do
       it 'should return hint not used' do
@@ -105,31 +93,41 @@ RSpec.describe GameQuestion, type: :model do
       end
     end
   end
-  #   it "correct add_friend_call" do
-  #     expect(game_question.help_hash).not_to include(:friend_call)
 
-  #     game_question.add_friend_call
-  #     expect(game_question.help_hash).to include(:friend_call)
+  describe '#add_audience_help' do
+    context 'when audience_help not used' do
+      it 'should return hint not used' do
+        expect(game_question.help_hash).not_to include(:audience_help)
+      end
+    end
 
-  #     variant = game_question.help_hash[:friend_call]
+    context 'when audience_help used' do
+      before { game_question.add_audience_help }
+      let!(:variant) { game_question.help_hash[:audience_help] }
 
-  #     expect(game_question.help_hash).to include({ friend_call: variant })
-  #     expect(variant).to be_an_instance_of(String)
-  #   end
-  # end
+      it 'should return hint used' do
+        expect(game_question.help_hash).to include(:audience_help)
+      end
 
-  # describe '#text & #level' do
-  #   it 'correct .level & .text delegates' do
-  #     expect(game_question.text).to eq(game_question.question.text)
-  #     expect(game_question.text).to eq(game_question.question.text)
-  #   end
-  # end
+      it 'return correct variant' do
+        expect(variant.keys).to contain_exactly('a', 'b', 'c', 'd')
+      end
+    end
+
+  end
+
+  describe '#text & #level' do
+    it 'correct .level & .text delegates' do
+      expect(game_question.text).to eq(game_question.question.text)
+      expect(game_question.text).to eq(game_question.question.text)
+    end
+  end
 
   # # ключ правильного ответа 'a', 'b', 'c', или 'd' correct_answer_key
-  # describe '#correct_answer_key' do
-  #   it 'returns the correct key' do
-  #     expect(game_question.correct_answer_key).to eq('b')
-  #     expect(game_question.correct_answer_key).to_not eq('g')
-  #   end
-  # end
+  describe '#correct_answer_key' do
+    it 'returns the correct key' do
+      expect(game_question.correct_answer_key).to eq('b')
+      expect(game_question.correct_answer_key).to_not eq('g')
+    end
+  end
 end
