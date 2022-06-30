@@ -48,55 +48,88 @@ RSpec.describe GameQuestion, type: :model do
     end
   end
 
-  context 'user helpers' do
-    it 'correct audience_help' do
-      expect(game_question.help_hash).not_to include(:audience_help)
+  # describe 'user helpers' do
 
-      game_question.add_audience_help
+  #   it 'correct audience_help' do
+  #     expect(game_question.help_hash).not_to include(:audience_help)
 
-      expect(game_question.help_hash).to include(:audience_help)
+  #     game_question.add_audience_help
 
-      ah = game_question.help_hash[:audience_help]
-      expect(ah.keys).to contain_exactly('a', 'b', 'c', 'd')
+  #     expect(game_question.help_hash).to include(:audience_help)
+
+  #     ah = game_question.help_hash[:audience_help]
+  #     expect(ah.keys).to contain_exactly('a', 'b', 'c', 'd')
+  #   end
+  describe '#add_fifty_fifty' do
+    context 'when fifty_fifty not used' do
+      it 'should return hint not used' do
+        expect(game_question.help_hash).not_to include(:fifty_fifty)
+      end
     end
 
-    it 'correct add_fifty_fifty' do
-      expect(game_question.help_hash).not_to include(:fifty_fifty)
+    context 'when fifty_fifty used' do
+      before { game_question.add_fifty_fifty }
+      let!(:variants) { game_question.help_hash[:fifty_fifty] }
 
-      game_question.add_fifty_fifty
-      expect(game_question.help_hash).to include(:fifty_fifty)
+      it 'should return hint used' do
+        expect(game_question.help_hash).to include(:fifty_fifty)
+      end
 
-      variant = game_question.help_hash[:fifty_fifty]
+      it 'return correct variant' do
+        expect(variants).to include('b')
+      end
 
-      expect(variant).to include('b')
-      expect(variant.size).to eq(2)
-    end
-
-    it "correct add_friend_call" do
-      expect(game_question.help_hash).not_to include(:friend_call)
-
-      game_question.add_friend_call
-      expect(game_question.help_hash).to include(:friend_call)
-
-      variant = game_question.help_hash[:friend_call]
-
-      expect(game_question.help_hash).to include({ friend_call: variant })
-      expect(variant).to be_an_instance_of(String)
-    end
-  end
-
-  describe '#text & #level' do
-    it 'correct .level & .text delegates' do
-      expect(game_question.text).to eq(game_question.question.text)
-      expect(game_question.text).to eq(game_question.question.text)
+      it 'return size variants' do
+        expect(variants.size).to eq(2)
+      end
     end
   end
 
-  # ключ правильного ответа 'a', 'b', 'c', или 'd' correct_answer_key
-  describe '#correct_answer_key' do
-    it 'returns the correct key' do
-      expect(game_question.correct_answer_key).to eq('b')
-      expect(game_question.correct_answer_key).to_not eq('g')
+  describe '#add_friend_call' do
+    context 'when friend_call not used' do
+      it 'should return hint not used' do
+        expect(game_question.help_hash).not_to include(:friend_call)
+      end
+    end
+
+    context 'when friend_call used' do
+      before { game_question.add_friend_call }
+      let!(:variant) { game_question.help_hash[:friend_call] }
+
+      it 'should return hint used' do
+        expect(game_question.help_hash).to include(:friend_call)
+      end
+
+      it 'return correct variant' do
+        expect(game_question.help_hash).to include({ friend_call: variant })
+      end
     end
   end
+  #   it "correct add_friend_call" do
+  #     expect(game_question.help_hash).not_to include(:friend_call)
+
+  #     game_question.add_friend_call
+  #     expect(game_question.help_hash).to include(:friend_call)
+
+  #     variant = game_question.help_hash[:friend_call]
+
+  #     expect(game_question.help_hash).to include({ friend_call: variant })
+  #     expect(variant).to be_an_instance_of(String)
+  #   end
+  # end
+
+  # describe '#text & #level' do
+  #   it 'correct .level & .text delegates' do
+  #     expect(game_question.text).to eq(game_question.question.text)
+  #     expect(game_question.text).to eq(game_question.question.text)
+  #   end
+  # end
+
+  # # ключ правильного ответа 'a', 'b', 'c', или 'd' correct_answer_key
+  # describe '#correct_answer_key' do
+  #   it 'returns the correct key' do
+  #     expect(game_question.correct_answer_key).to eq('b')
+  #     expect(game_question.correct_answer_key).to_not eq('g')
+  #   end
+  # end
 end
