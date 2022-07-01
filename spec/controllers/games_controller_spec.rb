@@ -36,7 +36,7 @@ RSpec.describe GamesController, type: :controller do
     end
 
     context 'when user authorized' do
-      before(:each) { sign_in user }
+      before { sign_in user }
       before { get :show, params: { id: game_w_questions.id }}
       let!(:game) { assigns(:game) }
 
@@ -137,7 +137,7 @@ RSpec.describe GamesController, type: :controller do
     end
 
     context 'when user is logged in and answer correct' do
-      before(:each) { sign_in user }
+      before { sign_in user }
       before { put :answer, params: { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }}
       let!(:game) { assigns(:game) }
 
@@ -163,7 +163,7 @@ RSpec.describe GamesController, type: :controller do
     end
       
     context 'when user is logged in and answer incorect' do
-      before(:each) { sign_in user }
+      before { sign_in user }
       let(:game) { assigns(:game) }
 
       before { put :answer, params: { id: game_w_questions.id, letter: 'a' }}
