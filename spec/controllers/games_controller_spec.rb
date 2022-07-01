@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'support/my_spec_helper' # наш собственный класс с вспомогательными методами
 require 'support/factory_bot'
+
 # Тестовый сценарий для игрового контроллера
 # Самые важные здесь тесты:
 #   1. на авторизацию (чтобы к чужим юзерам не утекли не их данные)
@@ -18,7 +19,6 @@ RSpec.describe GamesController, type: :controller do
   let(:game_w_questions) { create(:game_with_questions, user: user) }
 
   describe '#show' do
-
     context 'when Guest' do
       before { get :show, params: { id: game_w_questions.id }}
 
@@ -30,7 +30,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'error' do
+      it 'return flash alert' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
@@ -68,7 +68,7 @@ RSpec.describe GamesController, type: :controller do
           expect(response).to redirect_to(root_path)
         end
 
-        it 'return error' do
+        it 'return flash alert' do
           expect(flash[:alert]).to eq(I18n.t('controllers.games.not_your_game'))
         end
       end
@@ -87,7 +87,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'error' do
+      it 'return flash alert' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
@@ -112,14 +112,13 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(game_path(game))
       end
 
-      it 'return user notice' do
+      it 'return flash notice' do
         expect(flash[:notice]).to be
       end
     end
   end
 
   describe '#answer' do
-
     context 'when Guest' do
       before { get :answer, params: { id: game_w_questions.id }}
 
@@ -131,7 +130,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'error' do
+      it 'return flash alert' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
@@ -180,7 +179,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to user_path(user) 
       end
       
-      it 'return alert' do
+      it 'return flash alert' do
         expect(flash[:alert]).to be
       end
     end
@@ -226,7 +225,6 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#take_money' do
-
     context 'when Guest' do
       before { get :take_money, params: { id: game_w_questions.id }}
 
@@ -238,7 +236,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'error' do
+      it 'return flash alert' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
