@@ -22,11 +22,11 @@ RSpec.describe GamesController, type: :controller do
     context 'when Guest' do
       before { get :show, params: { id: game_w_questions.id }}
 
-      it 'status 302' do
+      it 'return status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'reditect log_in' do
+      it 'return reditect log_in' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
@@ -48,7 +48,7 @@ RSpec.describe GamesController, type: :controller do
         expect(game.user).to eq(user)
       end
 
-      it 'status 200' do
+      it 'return status 200' do
         expect(response.status).to eq(200)
       end
 
@@ -79,11 +79,11 @@ RSpec.describe GamesController, type: :controller do
     context 'when Guest' do
       before { get :create, params: { id: game_w_questions.id }}
 
-      it 'status 302' do
+      it 'return status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'reditect log_in' do
+      it 'return reditect log_in' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
@@ -122,11 +122,11 @@ RSpec.describe GamesController, type: :controller do
     context 'when Guest' do
       before { get :answer, params: { id: game_w_questions.id }}
 
-      it 'status 302' do
+      it 'return status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'reditect log_in' do
+      it 'return reditect log_in' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
@@ -228,11 +228,11 @@ RSpec.describe GamesController, type: :controller do
     context 'when Guest' do
       before { get :take_money, params: { id: game_w_questions.id }}
 
-      it 'status 302' do
+      it 'return status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'reditect log_in' do
+      it 'return reditect log_in' do
         expect(response).to redirect_to(new_user_session_path)
       end
 

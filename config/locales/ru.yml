@@ -96,6 +96,8 @@ ru:
       owner: 'Организатор'
       subject: "Новое фото для %{event}"
   views: 
+    users:
+      change_password: Сменить имя и пароль
     events:
       pincode: Пин-код
 

@@ -1,8 +1,18 @@
+Напишите тесты на шаблон app/views/users/show.html.erb.
+
+Проверьте, что
+
+- пользователь видит там свое имя
+- что текущий пользователь (и только он) видит там кнопку для смены пароля
+что на странице отрисовываются фрагменты с игрой
+В качестве ответа приложите ссылку на репозиторий.
+
+
 <div class="row">
 <div class="col-md-8 col-md-offset-2">
   <div>
     <h1><%= @user.name %></h1>
-    <%= link_to I18n.t('views.users.change_password'), edit_user_registration_path(@user) if @user == current_user %>
+    <%= link_to 'Сменить имя и пароль', edit_user_registration_path(@user) if @user == current_user %>
   </div>
   <table class="users-table table text-color">
     <thead>
