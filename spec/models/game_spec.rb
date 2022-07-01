@@ -59,7 +59,7 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.current_game_question).not_to eq(question)
       # игра продолжается
       expect(game_w_questions.status).to eq(:in_progress)
-      expect(game_w_questions.finished?).to be_falsey
+      expect(game_w_questions.finished?).to be false
     end
   end
 
@@ -177,7 +177,7 @@ RSpec.describe Game, type: :model do
         end
   
         it 'should continue game' do
-          expect(game_w_questions.finished?).to be_falsey
+          expect(game_w_questions.finished?).to be false
         end
       end
 
