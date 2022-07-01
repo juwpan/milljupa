@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 require 'support/my_spec_helper' # наш собственный класс с вспомогательными методами
-
+require 'support/factory_bot'
 # Тестовый сценарий для игрового контроллера
 # Самые важные здесь тесты:
 #   1. на авторизацию (чтобы к чужим юзерам не утекли не их данные)
@@ -11,11 +11,11 @@ require 'support/my_spec_helper' # наш собственный класс с �
 #
 RSpec.describe GamesController, type: :controller do
   # обычный пользователь
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { create(:user) }
   # админ
-  let(:admin) { FactoryBot.create(:user, is_admin: true) }
+  let(:admin) { create(:user, is_admin: true) }
   # игра с прописанными игровыми вопросами
-  let(:game_w_questions) { FactoryBot.create(:game_with_questions, user: user) }
+  let(:game_w_questions) { create(:game_with_questions, user: user) }
 
   describe '#show' do
 
@@ -57,7 +57,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       context "when someone else's game" do
-        let(:alien_game) { FactoryBot.create(:game_with_questions) }
+        let(:alien_game) { create(:game_with_questions) }
         before { get :show, params: { id: alien_game.id }}
     
         it 'return status 302' do

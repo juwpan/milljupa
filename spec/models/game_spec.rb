@@ -4,16 +4,17 @@
 
 require 'rails_helper'
 require 'support/my_spec_helper' # наш собственный класс с вспомогательными методами
+require 'support/factory_bot'
 
 # Тестовый сценарий для модели Игры
 # В идеале - все методы должны быть покрыты тестами,
 # в этом классе содержится ключевая логика игры и значит работы сайта.
 RSpec.describe Game, type: :model do
   # пользователь для создания игр
-  let(:user) { FactoryBot.create(:user) }
+  let(:user) { create(:user) }
 
   # игра с прописанными игровыми вопросами
-  let(:game_w_questions) { FactoryBot.create(:game_with_questions, user: user) }
+  let(:game_w_questions) { create(:game_with_questions, user: user) }
 
   # Группа тестов на работу фабрики создания новых игр
   context 'Game Factory' do
@@ -150,7 +151,7 @@ RSpec.describe Game, type: :model do
     
       context 'and question is last' do
         let!(:level) { Question::QUESTION_LEVELS.max }
-        let!(:game_w_questions) { FactoryBot.create(:game_with_questions, user: user, current_level: level) }
+        let!(:game_w_questions) { create(:game_with_questions, user: user, current_level: level) }
 
         it 'should return level 15' do
           expect(game_w_questions.current_level).to eq(level + 1)
@@ -181,7 +182,7 @@ RSpec.describe Game, type: :model do
       end
 
       context 'and time is over' do
-        let!(:game_w_questions) { FactoryBot.create(:game_with_questions, user: user, created_at: 45.minutes.ago ) }
+        let!(:game_w_questions) { create(:game_with_questions, user: user, created_at: 45.minutes.ago ) }
   
         it 'should finish game with status timeout' do
           expect(game_w_questions.status).to eq :timeout
