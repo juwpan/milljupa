@@ -19,18 +19,18 @@ RSpec.describe GamesController, type: :controller do
   let(:game_w_questions) { create(:game_with_questions, user: user) }
 
   describe '#show' do
-    context 'when Guest' do
+    context 'when guest' do
       before { get :show, params: { id: game_w_questions.id }}
 
-      it 'return status 302' do
+      it 'will give status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'return reditect log_in' do
+      it 'redirect to new_user_session_path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'return flash alert' do
+      it 'fills flash with alert message' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe GamesController, type: :controller do
       before { get :show, params: { id: game_w_questions.id }}
       let!(:game) { assigns(:game) }
 
-      it 'return game continues' do
+      it 'continues the game' do
         expect(game.finished?).to be false
       end
 
@@ -48,11 +48,11 @@ RSpec.describe GamesController, type: :controller do
         expect(game.user).to eq(user)
       end
 
-      it 'return status 200' do
+      it 'will give status 200' do
         expect(response.status).to eq(200)
       end
 
-      it 'return user sees his game' do
+      it 'render show view' do
         expect(response).to render_template('show')
       end
 
@@ -60,15 +60,15 @@ RSpec.describe GamesController, type: :controller do
         let(:alien_game) { create(:game_with_questions) }
         before { get :show, params: { id: alien_game.id }}
     
-        it 'return status 302' do
-          expect(response.status).to eq(302) # статус не 200 ОК
+        it 'will give status 302' do
+          expect(response.status).to eq(302)
         end
 
-        it 'return root_path' do
+        it 'redirect to root_path' do
           expect(response).to redirect_to(root_path)
         end
 
-        it 'return flash alert' do
+        it 'fills flash with alert message' do
           expect(flash[:alert]).to eq(I18n.t('controllers.games.not_your_game'))
         end
       end
@@ -76,18 +76,18 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#create' do
-    context 'when Guest' do
+    context 'when guest' do
       before { get :create, params: { id: game_w_questions.id }}
 
-      it 'return status 302' do
+      it 'will give status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'return reditect log_in' do
+      it 'reditect  to new_user_session_path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'return flash alert' do
+      it 'fills flash with alert message' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
@@ -100,7 +100,7 @@ RSpec.describe GamesController, type: :controller do
       end
       let!(:game) { assigns(:game) }
 
-      it 'return game continues' do
+      it 'continues the game' do
         expect(game.finished?).to be false
       end
 
@@ -108,11 +108,11 @@ RSpec.describe GamesController, type: :controller do
         expect(game.user).to eq(user)
       end
 
-      it 'return redirect_to game_path(game)' do
+      it 'redirect to game_path(game)' do
         expect(response).to redirect_to(game_path(game))
       end
 
-      it 'return flash notice' do
+      it 'fills flash with notice message' do
         expect(flash[:notice]).to be
       end
     end
@@ -122,15 +122,15 @@ RSpec.describe GamesController, type: :controller do
     context 'when Guest' do
       before { get :answer, params: { id: game_w_questions.id }}
 
-      it 'return status 302' do
+      it 'will give status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'return reditect log_in' do
+      it 'reditect to new_user_session_path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'return flash alert' do
+      it 'fills flash with alert message' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
@@ -140,7 +140,7 @@ RSpec.describe GamesController, type: :controller do
       before { put :answer, params: { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }}
       let!(:game) { assigns(:game) }
 
-      it 'return game continues' do
+      it 'continues the game' do
         expect(game.finished?).to be false
       end
 
@@ -148,15 +148,15 @@ RSpec.describe GamesController, type: :controller do
         expect(game.user).to eq(user)
       end
 
-      it 'return current_level > 0' do
+      it 'return game current_level' do
         expect(game.current_level).to be > 0
       end
 
-      it 'return redirect_to game_path(game)' do
+      it 'redirect_to game_path(game)' do
         expect(response).to redirect_to(game_path(game))
       end
 
-      it 'return answers correct' do
+      it 'check that flash is empty' do
         expect(flash.empty?).to be_truthy
       end
     end
@@ -167,19 +167,19 @@ RSpec.describe GamesController, type: :controller do
 
       before { put :answer, params: { id: game_w_questions.id, letter: 'a' }}
       
-      it 'return game over' do
+      it 'game over' do
         expect(game.finished?).to be_truthy
       end
 
-      it 'return level = 0' do
+      it 'return current level' do
         expect(game.current_level).to be 0
       end
 
-      it 'return page user_path(user)' do
+      it 'redirect to user_path(user)' do
         expect(response).to redirect_to user_path(user) 
       end
       
-      it 'return flash alert' do
+      it 'fills flash with alert message' do
         expect(flash[:alert]).to be
       end
     end
@@ -225,18 +225,18 @@ RSpec.describe GamesController, type: :controller do
   end
 
   describe '#take_money' do
-    context 'when Guest' do
+    context 'when guest' do
       before { get :take_money, params: { id: game_w_questions.id }}
 
-      it 'return status 302' do
+      it 'will give status 302' do
         expect(response.status).to eq(302)
       end
 
-      it 'return reditect log_in' do
+      it 'reditect to new_user_session_path' do
         expect(response).to redirect_to(new_user_session_path)
       end
 
-      it 'return flash alert' do
+      it 'fills flash with alert message' do
         expect(flash[:alert]).to eq(I18n.t('devise.failure.unauthenticated'))
       end
     end
@@ -249,7 +249,7 @@ RSpec.describe GamesController, type: :controller do
       end
       let(:game) { assigns(:game) }
       
-      it 'return game finish' do
+      it 'game finish' do
         expect(game.finished?).to be_truthy
       end
 
@@ -262,11 +262,11 @@ RSpec.describe GamesController, type: :controller do
         expect(user.balance).to eq(200)
       end
 
-      it 'return page user_path(user)' do
+      it 'redirect to user_path(user)' do
         expect(response).to redirect_to(user_path(user))
       end
 
-      it 'return warning flash' do
+      it 'fills flash with warning message' do
         expect(flash[:warning]).to be
       end
     end 

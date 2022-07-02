@@ -172,7 +172,7 @@ RSpec.describe Game, type: :model do
           expect(game_w_questions.current_level).to eq 1
         end
 
-        it 'should return status :in_progress' do
+        it 'should will give status 302 :in_progress' do
           expect(game_w_questions.status).to eq :in_progress
         end
   
