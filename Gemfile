@@ -36,15 +36,11 @@ group :development do
   gem 'rubocop', '~> 1.31.0'
   gem 'shoulda-matchers'
   gem 'sqlite3', '~> 1.4'
-  # Гем, который использует rspec, чтобы смотреть наш сайт
-  gem 'capybara'
-  # Гем, который позволяет смотреть, что видит capybara
-  gem 'launchy'
 end
 
 group :test do
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
+  gem 'launchy'
+  gem 'capybara'
 end
 
 group :production do
