@@ -26,6 +26,13 @@ a.navbar-brand:hover {
   background-color: rgba(88, 90, 92, 0.473);
 }
 
+.navbar-form {
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 h2, h3 {
   margin: 0
 }

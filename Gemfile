@@ -29,19 +29,21 @@ gem 'puma', '~> 5.0'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'rails-controller-testing'
 
-group :development do
+group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 6.0.0.rc1'
   gem 'rubocop', '~> 1.31.0'
   gem 'shoulda-matchers'
   gem 'sqlite3', '~> 1.4'
+  gem 'capybara'
+  gem 'launchy'
 end
 
-group :test do
-  gem 'launchy'
-  gem 'capybara'
-end
+gem 'capybara_turbolinks', group: :test
+
+# group :test do
+# end
 
 group :production do
   gem 'pg', '~> 1.1'

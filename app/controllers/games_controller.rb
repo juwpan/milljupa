@@ -29,7 +29,7 @@ class GamesController < ApplicationController
 
     # отправляемся на страницу игры
     redirect_to game_path(@game), notice: I18n.t('controllers.games.game_created', created_at: @game.created_at)
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e # если ошибка создания игры
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e # если ошибка создания игры
     Rails.logger.error("Error creating game for user #{current_user.id}, msg = #{e}. #{e.backtrace}")
     # отправляемся назад с алертом
     redirect_to :back, alert: I18n.t('controllers.games.game_not_created')

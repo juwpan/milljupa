@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   root 'users#index'
 
@@ -10,9 +8,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   # в профиле юзера показываем его игры, на главной - список лучших игроков
-  resources :users, only: %i[index show]
+  resources :users, only: [:index, :show]
 
-  resources :games, only: %i[create show] do
+  resources :games, only: [:show, :create] do
     # доп. методы ресурса:
     put 'help', on: :member # помощь зала
     put 'answer', on: :member # ответ на текущий вопрос
@@ -21,5 +19,5 @@ Rails.application.routes.draw do
 
   # Ресурс в единственном числе - ВопросЫ
   # для загрузки админом сразу пачки вопросОВ
-  resource :questions, only: %i[new create]
+  resource :questions, only: [:new, :create]
 end

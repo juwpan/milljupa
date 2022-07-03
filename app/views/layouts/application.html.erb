@@ -17,7 +17,7 @@
   <div class="container">
     <%= link_to 'Миллиардер', root_path, class: 'btn navbar-btn btn-warning btn-xs', data: { turbo: false } %>
     <% if user_signed_in? %>
-      <div class="navbar-form navbar-right">
+      <div class="navbar-form">
 
         <% if current_user.is_admin? %>
           <%# Ссылка на админку %>
@@ -30,11 +30,11 @@
                     class: 'btn navbar-btn text-color-header'
         %>
         
-        <%= link_to 'Новая игра', games_path, data: { turbo_method: :post }, class: 'btn navbar-btn btn-success btn-xs' %>
+        <%= button_to 'Новая игра', games_path, method: :post, class: 'btn navbar-btn btn-success btn-xs' %>
         <%= link_to 'Выйти', destroy_user_session_path, method: :delete, class: 'btn btn-info btn-xs navbar-btn' %>
       </div>
     <% else %>
-      <div class="navbar-form navbar-right">
+      <div class="navbar-form">
         <%= link_to 'Войти', new_user_session_path, class: 'btn btn-primary' %>
         <%= link_to 'Зарегистрироваться', new_user_registration_path, class: 'btn btn-success' %>
       </div>
