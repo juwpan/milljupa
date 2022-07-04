@@ -34,7 +34,6 @@ RSpec.feature 'USER creates a game', type: :feature do
     # Кликаем по ссылке "Новая игра"
     click_button 'Новая игра' 
     
-
     # Ожидаем, что попадем на нужный url
     expect(page).to have_current_path '/games/1'
 

@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     put 'take_money', on: :member #  игрок берет деньги
   end
 
+  # get('games' => 'games#show')
+
   # Ресурс в единственном числе - ВопросЫ
   # для загрузки админом сразу пачки вопросОВ
   resource :questions, only: [:new, :create]

@@ -43,6 +43,10 @@ Rails.application.configure do
   # Настройки для капибары и ланчи, чтобы в открываемых с помощью
   # save_and_open_page страницах были все нужные стили
   # Внимание! Нужно поднять сервер на 3000-м порте.
+
+  # config.assets.prefix = "assets"    # place test assets in public/assets_test directory
+  # config.action_controller.asset_host = "file://#{::Rails.root}/public"
+
   config.serve_static_files = true
   config.assets.debug = true
   config.asset_host   = 'http://localhost:3000'

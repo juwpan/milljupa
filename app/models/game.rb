@@ -117,11 +117,11 @@ class Game < ApplicationRecord
     end
   end
 
-  # Записываем юзеру игровую сумму на счет и завершаем игру,
-  def take_money!
-    return if time_out! || finished? # из законченной или неначатой игры нечего брать
-    finish_game!((previous_level > -1) ? PRIZES[previous_level] : 0, false)
-  end
+  # # Записываем юзеру игровую сумму на счет и завершаем игру,
+  # def take_money!
+  #   return if time_out! || finished? # из законченной или неначатой игры нечего брать
+  #   finish_game!((previous_level > -1) ? PRIZES[previous_level] : 0, false)
+  # end
   # Записываем юзеру игровую сумму на счет и завершаем игру,
   def take_money!
     return if time_out! || finished? # из законченной или неначатой игры нечего брать

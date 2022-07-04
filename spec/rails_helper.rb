@@ -35,8 +35,6 @@ RSpec.configure do |config|
   # хелперы для авторизации с помощью девайс
   config.include Devise::TestHelpers, type: :controller
   config.include Devise::TestHelpers, type: :view
-
-  # Подключаем в фичах специальные хелперы для авторизации
   config.include Warden::Test::Helpers, type: :feature
 
   # RSpec Rails can automatically mix in different behaviours to your tests
@@ -61,4 +59,3 @@ RSpec.configure do |config|
 end
 
 Capybara.asset_host = "http://localhost:3000"
-# Это нужно, чтобы капибара искала стили и js в правильном месте
