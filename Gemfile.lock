@@ -84,8 +84,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara_turbolinks (0.1.4)
-      capybara (>= 2.4)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     cssbundling-rails (1.1.1)
@@ -309,7 +307,6 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   capybara
-  capybara_turbolinks
   cssbundling-rails
   debug
   devise

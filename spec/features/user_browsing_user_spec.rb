@@ -5,15 +5,29 @@ require 'support/factory_bot'
 RSpec.feature 'USER browsing user', type: :feature do 
   let(:user_one) { create :user, name: "Яссон" }
 
-  let(:game_one) { create(
-    :game, id: 1, user: user_one, created_at: Time.parse('2022.04.07, 16:00'), current_level: 3, prize: 0,
-    is_failed: :in_progress)}
+  let(:game_one) do
+    create(
+      :game,
+      user: user_one,
+      created_at: Time.parse('2022.08.09, 16:00'),
+      current_level: 678,
+      prize: 0,
+      is_failed: :in_progress
+    )
+  end
 
-  let(:game_two) { create(
-    :game, id: 2, user: user_one, created_at: Time.parse('2022.04.07, 16:47'), current_level: 2, prize: 200,
-    finished_at: Time.parse('2022.04.07, 16:49'))}
+  let(:game_two) do 
+    create(
+      :game,
+      user: user_one,
+      created_at: Time.parse('2022.04.07, 16:47'),
+      current_level: 4,
+      prize: 200,
+      finished_at: Time.parse('2022.04.07, 16:49'),
+    )
+  end
 
-  before(:each) do
+  before do
     game_one
     game_two
   end
@@ -33,14 +47,15 @@ RSpec.feature 'USER browsing user', type: :feature do
       expect(page).to have_content 'Яссон'
 
       # Начало  игры
-      expect(page).to have_content '07 апр., 15:00'
+      expect(page).to have_content '09 авг., 15:00'
 
       # Игра в процессе
       expect(page).to have_content 'в процессе'
 
-      # Вопрос
-      expect(page).to have_content '3'
+      # Вопрос №678
+      expect(page).to have_content '678'
 
+      # Не отображает ссылку
       expect(page).not_to have_content 'Сменить имя и пароль'
     end
   end
@@ -77,11 +92,9 @@ RSpec.feature 'USER browsing user', type: :feature do
       expect(page).to have_content 'деньги'
 
       # Вопрос
-      expect(page).to have_content '2'
+      expect(page).to have_content '4'
 
       expect(page).not_to have_content 'Сменить имя и пароль'
-
-      save_and_open_page
     end
   end
 end

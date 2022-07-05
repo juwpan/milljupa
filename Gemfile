@@ -40,7 +40,7 @@ group :development, :test do
   gem 'launchy'
 end
 
-gem 'capybara_turbolinks', group: :test
+# gem 'capybara_turbolinks', group: :test
 
 group :production do
   gem 'pg', '~> 1.1'
