@@ -5,7 +5,7 @@ require 'support/factory_bot'
 RSpec.feature 'USER browsing user', type: :feature do 
   let(:user_one) { create :user, name: "Яссон" }
 
-  let(:game_one) do
+  let!(:game_one) do
     create(
       :game,
       user: user_one,
@@ -16,20 +16,15 @@ RSpec.feature 'USER browsing user', type: :feature do
     )
   end
 
-  let(:game_two) do 
+  let!(:game_two) do 
     create(
       :game,
       user: user_one,
       created_at: Time.parse('2022.04.07, 16:47'),
-      current_level: 4,
-      prize: 200,
+      current_level: 11,
+      prize: 826,
       finished_at: Time.parse('2022.04.07, 16:49'),
     )
-  end
-
-  before do
-    game_one
-    game_two
   end
 
   # Когда пользователь не вошёл в систему
@@ -86,13 +81,13 @@ RSpec.feature 'USER browsing user', type: :feature do
       expect(page).to have_content '07 апр., 15:47'
 
       # Выигрыш
-      expect(page).to have_content '200'
+      expect(page).to have_content '826'
 
       # Игра в закончена и взяты деньги
       expect(page).to have_content 'деньги'
 
       # Вопрос
-      expect(page).to have_content '4'
+      expect(page).to have_content '11'
 
       expect(page).not_to have_content 'Сменить имя и пароль'
     end
