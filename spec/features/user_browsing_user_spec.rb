@@ -36,7 +36,7 @@ RSpec.feature 'USER browsing user', type: :feature do
       click_link 'Яссон'
 
       # Переходит на правильный адресс всех игр пользователя
-      expect(page).to have_current_path '/users/1'
+      expect(page).to have_current_path user_path(user_one.id)
 
       # Имя игрока
       expect(page).to have_content 'Яссон'
@@ -69,7 +69,7 @@ RSpec.feature 'USER browsing user', type: :feature do
       click_link user_one.name
 
       # Переходит на правильный адресс всех игр пользователя
-      expect(page).to have_current_path '/users/1'
+      expect(page).to have_current_path user_path(user_one.id)
 
       # Имя залогинненого пользователя
       expect(page).to have_content 'Боря'
