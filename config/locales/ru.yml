@@ -56,15 +56,8 @@ ru:
   number:
     currency:
       format:
-        # Формат отображения валюты и обозначение самой валюты
         unit: "₽"
         precision: 0
-  # devise:
-  #   registrations:
-  #     new:
-  #       registrations: Создать аккаунт
-  
-  # -------------------------------------------------------------
 
   path:
     root_path: На главную
@@ -80,7 +73,7 @@ ru:
     subscription:
       title: 'Новая подписка'
       name: 'Имя'
-      email: 'Email'
+      email: 'Почта'
       author: 'Автор'
       event: 'Событие'
       datetime: 'Дата'
@@ -89,7 +82,7 @@ ru:
     photo:
       title: 'Новое фото'
       name: 'Имя'
-      email: 'Email'
+      email: 'Почта'
       author: 'Автор'
       event: 'Событие'
       datetime: 'Дата'

@@ -1,5 +1,47 @@
 # frozen_string_literal: true
+#! config/initializers/devise.rb
 
+#! Create custom failure for turbo
+class TurboFailureApp < Devise::FailureApp
+  def respond
+    if request_format == :turbo_stream
+      redirect
+    else
+      super
+    end
+  end
+
+  def skip_format?
+    %w(html turbo_stream */*).include? request_format.to_s
+  end
+end
+
+# class TurboController < ApplicationController
+#   class Responder < ApplicationController::Responder
+#     def to_turbo_stream
+#       controller.render(options.merge(formats: :html))
+#     rescue ActionView::MssingTemplate => error
+#       if get?
+#         raise error
+#       elsif has_errors? && default_action
+#         render rendering_options.merge(formats: :html, status: :unprocessable_entity)
+#       else
+#         redirect_to navigation_location
+#       end
+#     end
+#   end
+
+#   self.responder = Responder
+#   responder_to :html, :turbo_stream
+# end
+
+
+# Assuming you have not yet modified this file, each configuration option below
+# is set to its default value. Note that some are commented out while others
+# are not: uncommented lines are intended to protect your configuration from
+# breaking changes in upgrades (i.e., in the event that future versions of
+# Devise change the default values for those options).
+#
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -8,13 +50,23 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'e4a1bf4cad936074c7d9f784e20f659c31eb9aa3a016fb7cf156cfd7db53afb25121a0d945bd49a6b3fb51d5ba655e7048b23498c54d4662788bd973cb3caacb'
+  # config.secret_key = '7631b25364a858ca17e7181b0d1772aa59a6e283e18aafecb41ec5819ceb035d83dcf45e98aaffa5faf2b601fb062c128fcf0678f9c4f3eac2086f510063a7b3'
 
+  
+  # ==> Controller configuration
+  # Configure the parent class to the devise controllers.
+  
+  #! Change parent controller with custom controller
+  config.parent_controller = 'Users::DeviseController'
+  # config.parent_controller = 'TurboController'
+  
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
+
+  # config.mailer_sender = Rails.application.credentials.dig(:mj, :SENDER_EMAIL)
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -64,7 +116,10 @@ Devise.setup do |config|
   # Tell if authentication through HTTP Auth is enabled. False by default.
   # It can be set to an array that will enable http authentication only for the
   # given strategies, for example, `config.http_authenticatable = [:database]` will
-  # enable it only for database authentication. The supported strategies are:
+  # enable it only for database authentication.
+  # For API-only applications to support authentication "out-of-the-box", you will likely want to
+  # enable this with :database unless you are using a custom strategy.
+  # The supported strategies are:
   # :database      = Support basic authentication with authentication key + password
   # config.http_authenticatable = false
 
@@ -92,30 +147,45 @@ Devise.setup do |config|
   # from the server. You can disable this option at your own risk.
   # config.clean_up_csrf_token_on_authentication = true
 
+  # When false, Devise will not attempt to reload routes on eager load.
+  # This can reduce the time taken to boot the app but if your application
+  # requires the Devise mappings to be loaded during boot time the application
+  # won't boot properly.
+  # config.reload_routes = true
+
   # ==> Configuration for :database_authenticatable
-  # For bcrypt, this is the cost for hashing the password and defaults to 11. If
+  # For bcrypt, this is the cost for hashing the password and defaults to 12. If
   # using other algorithms, it sets how many times you want the password to be hashed.
+  # The number of stretches used for generating the hashed password are stored
+  # with the hashed password. This allows you to change the stretches without
+  # invalidating existing passwords.
   #
   # Limiting the stretches to just one in testing will increase the performance of
   # your test suite dramatically. However, it is STRONGLY RECOMMENDED to not use
   # a value less than 10 in other environments. Note that, for bcrypt (the default
   # algorithm), the cost increases exponentially with the number of stretches (e.g.
   # a value of 20 is already extremely slow: approx. 60 seconds for 1 calculation).
-  config.stretches = Rails.env.test? ? 1 : 11
+  config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '0bd879791bd383b466f4bb72512e5a68eba427d4e467aefcc498e55f90f630de1d60abba4cd539faf952adbf9f14ca669158f8f68d2b5585fd7de1e9a3d52f6b'
+  # config.pepper = 'd3246b12f47134dbd11146093342c63b068f89d767fdb0df6af01afcd7d592d3e08fc9e4cf9b3453079067293f840da3bfd0bff77c0b3aa96cd8c616bec50457'
 
-  # Send a notification email when the user's password is changed
+  # Send a notification to the original email when the user's email is changed.
+  # config.send_email_changed_notification = false
+
+  # Send a notification email when the user's password is changed.
   # config.send_password_change_notification = false
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
   # confirming their account. For instance, if set to 2.days, the user will be
   # able to access the website for two days without confirming their account,
-  # access will be blocked just in the third day. Default is 0.days, meaning
-  # the user cannot access the website without confirming their account.
-  # config.allow_unconfirmed_access_for = 2.days
+  # access will be blocked just in the third day.
+  # You can also set it to nil, which will allow the user to access the website
+  # without confirming their account.
+  # Default is 0.days, meaning the user cannot access the website without
+  # confirming their account.
+  # config.allow_unconfirmed_access_for = 10.years
 
   # A period that the user is allowed to confirm their account before their
   # token becomes invalid. For example, if set to 3.days, the user can confirm
@@ -235,7 +305,9 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html]
+  
+  #! Override navigational_formats
+  # config.navigational_formats = ['*/*', :html, :turbo_stream]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :get
@@ -243,16 +315,35 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  # config.omniauth :github, Rails.application.credentials.dig(:github, :github_client_id),
+  # Rails.application.credentials.dig(:github, :github_client_secret), scope:'user, public_repo'
 
+  # config.omniauth :vkontakte, Rails.application.credentials.dig(:vk, :ID),
+  # Rails.application.credentials.dig(:vk, :secret_key_defender), scope: 'email'
+
+  # config.omniauth :google_oauth2, Rails.application.credentials.dig(:google, :google_client_id),
+  # Rails.application.credentials.dig(:google, :google_client_secret)
+
+  # config.omniauth :mail_ru, Rails.application.credentials.dig(:mail, :mail_client_id),
+  # Rails.application.credentials.dig(:mail, :mail_client_secret),
+  # callback_url: Rails.application.credentials.dig(:mail, :callback_url)
+
+
+  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  
+  # OmniAuth.config.allowed_request_methods = [:get]
+  # OmniAuth.config.silence_get_warning = true
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
-  # config.warden do |manager|
+  
+  #! Set custom failure
+  config.warden do |manager|
+    manager.failure_app = TurboFailureApp
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
-  # end
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
@@ -267,4 +358,17 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+
+  # ==> Turbolinks configuration
+  # If your app is using Turbolinks, Turbolinks::Controller needs to be included to make redirection work correctly:
+  #
+  # ActiveSupport.on_load(:devise_failure_app) do
+  #   include Turbolinks::Controller
+  # end
+
+  # ==> Configuration for :registerable
+
+  # When set to false, does not sign a user in automatically after their password is
+  # changed. Defaults to true, so a user is signed in automatically after changing a password.
+  # config.sign_in_after_change_password = true
 end
