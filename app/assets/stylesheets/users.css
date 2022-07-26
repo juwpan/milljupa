@@ -1,3 +1,7 @@
 .users-table .label {
   margin-left: .5em;
 }
+
+.user-prize {
+  color: yellow;
+}
