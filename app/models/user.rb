@@ -4,7 +4,8 @@
 #
 # Юзер — он и в Африке юзер, только в Африке черный :)
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable, :recoverable, :validatable, :rememberable
+  devise :database_authenticatable, :registerable,
+    :recoverable, :validatable, :rememberable
 
   # имя не пустое, email валидирует Devise
   validates :name, presence: true

@@ -3,7 +3,7 @@
 <% game = game_question.game %>
 <% help = game_question.help_hash %>
 
-<%= render partial: 'errors/form_errors', locals: {model: game} %>
+<%= render partial: 'errors/form_errors', locals: { model: game } %>
 
 <div class="alert alert-info text-center">
   <h2><%= game_question.text %></h2>

@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="col-sm-3 col-sm-pull-9 mt-3">
+  <div class="col-sm-3 col-sm-pull-9 mt-3 text-center">
     <ul class="list-group list-group-prizes game-prizes">
       <% Game::PRIZES.reverse.each_with_index do |prize, index| %>
         <li class="list-group-item text-center <%= 'active' if (14 - index == @game.current_level) %>">
@@ -25,6 +25,6 @@
       <% end %>
     </ul>
 
-    <%= link_to 'Забрать выигрыш', take_money_game_path(@game), data: { turbo_method: :put }, class: 'btn btn-info btn-block mt-3' %>
+    <%= link_to I18n.t("views.game.take_money"), take_money_game_path(@game), data: { turbo_method: :put }, class: 'btn btn-info btn-block mt-3' %>
   </div>
 </div>

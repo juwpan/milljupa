@@ -13,10 +13,10 @@
         <% end %>
 
         <% if help.key?(:audience_help) %>
-          <p>Зрители считают: </p>
+          <p><%= I18n.t("views.game.people_choice") %></p>
           <%# Выводим распределение голосов зрителей %>
           <% help[:audience_help].sort.map do |key, value| %>
-            <div class="progress">
+            <div class="people-answer-show">
               <div class="progress-bar progress-bar-danger" style="width: <%= value %>%;">
                 <%= key.upcase %>: <%= value %>%
               </div>
@@ -33,17 +33,19 @@
   <div class="col-sm-4">
     <%# Для каждой подсказки с помощью объекта game проверяем, не была ли подсказка использована ранее %>
     <% unless game.fifty_fifty_used? %>
-      <%= button_to '50/50', help_game_path(game, help_type: :fifty_fifty), method: :put, class: 'btn btn-default btn-block btn-help' %>
+      <%= button_to '50/50', help_game_path(game, help_type: :fifty_fifty), method: :put, class: 'btn btn-default btn-block btn-help user-prize' %>
     <% end %>
   </div>
+
   <div class="col-sm-4">
     <% unless game.friend_call_used? %>
-      <%= button_to 'telephone', help_game_path(game, help_type: :friend_call), method: :put, class: 'btn btn-default btn-block btn-help' %>
+      <%= button_to fa_icon('telephone-plus-fill'), help_game_path(game, help_type: :friend_call), method: :put, class: 'btn btn-default btn-block btn-help' %>
     <% end %>
   </div>
+
   <div class="col-sm-4">
     <% unless game.audience_help_used? %>
-      <%= button_to 'help users', help_game_path(game, help_type: :audience_help), method: :put, class: 'btn btn-default btn-block btn-help' %>
+      <%= button_to fa_icon('people'), help_game_path(game, help_type: :audience_help), method: :put, class: 'btn btn-default btn-block btn-help' %>
     <% end %>
   </div>
 </div>

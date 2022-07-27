@@ -1,4 +1,5 @@
-body, html {
+html,
+body {
   font-family: Arial, sans-serif;
   height: 100%;
   background-image: url('bg.jpg');
@@ -8,6 +9,17 @@ body, html {
   background-position: center center;
   background-attachment: fixed;
   color: white;
+}
+
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-flex {
+  padding: 5px;
+  flex: 1 1 auto;
 }
 
 a {

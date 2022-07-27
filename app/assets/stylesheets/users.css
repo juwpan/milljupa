@@ -5,3 +5,13 @@
 .user-prize {
   color: yellow;
 }
+
+.people-answer-show {
+  display: flex;
+  height: 2rem;
+  overflow: hidden;
+  font-size: 1rem;
+  background-color: #f2f3bd9a;
+  border-bottom: 1px solid black;
+  border-radius: 0.25rem;
+}

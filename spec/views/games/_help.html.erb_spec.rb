@@ -13,7 +13,7 @@ RSpec.describe 'games/help', type: :view do
 
       expect(rendered).to match '50/50'
       expect(rendered).to match 'telephone'
-      expect(rendered).to match 'help users'
+      expect(rendered).to match 'people'
     end
 
     # Проверяем, что выводится текст подсказки «Звонок другу»

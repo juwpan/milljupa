@@ -8,7 +8,8 @@ class ApplicationController < ActionController::Base
   before_action :set_new_game
 
   def configure_devise_params
-    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:name, :email, :password, :password_confirmation) }
+    devise_parameter_sanitizer.permit(
+      :sign_up) { |u| u.permit(:name, :email, :password, :password_confirmation) }
     devise_parameter_sanitizer.permit(:account_update) do |u|
       u.permit(:name, :password, :password_confirmation, :current_password)
     end

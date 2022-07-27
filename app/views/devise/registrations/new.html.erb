@@ -1,8 +1,7 @@
-<h2>Зарегистрироваться</h2>
+<h2><%= I18n.t("links.sign_up") %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
-
-<%= render partial: "errors/form_errors", locals: { model: @user } %>
+<%= devise_error_messages! %>
 
   <div class="form-group mb-3">
     <%= f.label :name, class: "col-sm-2 control-label" %>
@@ -39,6 +38,7 @@
       <%= f.submit t("submit.registration"), class: "btn btn-success mb-3", data: { turbo: false } %>
     </div>
   </div>
+
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-6">

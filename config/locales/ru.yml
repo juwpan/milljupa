@@ -1,4 +1,5 @@
 ru:
+
   game_help:
     friends:
       - "Жора"
@@ -88,13 +89,20 @@ ru:
       datetime: 'Дата'
       owner: 'Организатор'
       subject: "Новое фото для %{event}"
-  views: 
+  views:
+    game:
+      take_money: Забрать выигрыш
+      people_choice: Зрители считают
     users:
       change_password: Сменить имя и пароль
     events:
       pincode: Пин-код
 
   links:
+    new_game: Новая игра
+    millionaire: Миллионер
+    admin: Админ
+    add_new_questions: Залить новые вопросы
     delete: Удалить
     delete_account: Удалить мой аккаунт
     sign_up: Зарегистрироваться
@@ -224,7 +232,12 @@ ru:
   devise:
     confirmations:
       confirmed: Ваш адрес эл. почты успешно подтвержден.
-
+      resend_confirmation_instructions: Повторно отправить инструкции по подтверждению
+      edit_user: Редактировать пользователя
+      forgot_your_password: Забыли свой пароль?
+      password_confirmation: Подтверждение пароля
+      email: Почта
+      
       new:
         resend_confirmation_instructions: Выслать повторно письмо с активацией
         send_instructions: В течение нескольких минут вы получите письмо с инструкциями по подтверждению адреса эл. почты.
@@ -361,6 +374,7 @@ ru:
 
   format: "%{attribute} %{message}"
   messages:
+    email: почта
     accepted: нужно подтвердить
     blank: не может быть пустым
     confirmation: не совпадает со значением поля %{attribute}
