@@ -13,3 +13,11 @@ td {
 .text-color-header {
   color: rgb(29, 184, 214);
 }
+
+.text-color-header:hover {
+  color: rgb(255, 255, 255);
+}
+
+.text-yellow {
+  color: rgb(254, 195, 1);
+}

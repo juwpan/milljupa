@@ -1,70 +1,65 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= content_for?(:title) ? yield(:title) : 'Хороший программист — счастливчик!' %></title>
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
-  
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : 'Хороший программист — счастливчик!' %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+  <body>
 
-<body>
+    <div class="wrapper">
+    
+      <div class="navbar navbar-default navbar-static-top">
 
-  <div class="wrapper">
+        <div class="container">
+          <%= link_to I18n.t('links.millionaire'), root_path, class: 'btn navbar-btn btn-warning btn-xs', data: { turbo: false } %>
+          <% if user_signed_in? %>
+            <div class="navbar-form">
+              <% if current_user.is_admin? %>
+                <%# Ссылка на админку %>
+                <%= link_to I18n.t('links.admin'), rails_admin_path, class: 'btn navbar-btn btn-danger btn-xs' %>
+                <%= link_to I18n.t('links.add_new_questions'), new_questions_path, class: 'btn navbar-btn btn-warning btn-xs' %>
+              <% end %>
 
-    <div class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <%= link_to I18n.t('links.millionaire'), root_path, class: 'btn navbar-btn btn-warning btn-xs', data: { turbo: false } %>
-        <% if user_signed_in? %>
-          <div class="navbar-form">
-
-            <% if current_user.is_admin? %>
-              <%# Ссылка на админку %>
-              <%= link_to I18n.t('links.admin'), rails_admin_path, class: 'btn navbar-btn btn-danger btn-xs' %>
-              <%= link_to I18n.t('links.add_new_questions'), new_questions_path, class: 'btn navbar-btn btn-warning btn-xs' %>
-            <% end %>
-
-            <%= link_to content_tag(:span, "#{current_user.name} - #{number_to_currency current_user.balance}"),
+              <%= link_to content_tag(:span, "#{current_user.name} - #{number_to_currency current_user.balance}"),
                         user_path(current_user),
-                        class: 'btn navbar-btn text-color-header'
+                        class: 'btn btn-outline-primary text-color-header'
             %>
-            
-            <%= button_to I18n.t('links.new_game'), games_path, method: :post, class: 'btn navbar-btn btn-success btn-xs' %>
-            <%= link_to I18n.t('links.log_out'), destroy_user_session_path, method: :delete, class: 'btn btn-info btn-xs navbar-btn' %>
-          </div>
-        <% else %>
-          <div class="navbar-form">
-            <%= link_to I18n.t('links.log_in'), new_user_session_path, class: 'btn btn-primary' %>
-            <%= link_to I18n.t('links.sign_up'), new_user_registration_path, class: 'btn btn-success' %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="container container-flex">
-      <div class="row">
-        <div class="col-lg-12">
-        
-        <div class="mt-1 mb-1">
-          <%= render "devise/shared/flash" %>
+              <%= button_to I18n.t('links.new_game'), games_path, method: :post, class: 'btn navbar-btn btn-success btn-xs' %>
+              <%= link_to I18n.t('links.log_out'), destroy_user_session_path, method: :delete, class: 'btn btn-info btn-xs navbar-btn' %>
+            </div>
+          <% else %>
+            <div>
+              <%= link_to I18n.t('links.log_in'), new_user_session_path, class: 'btn btn-primary' %>
+              <%= link_to I18n.t('links.sign_up'), new_user_registration_path, class: 'btn btn-success' %>
+            </div>
+          <% end %>
         </div>
 
-          <%= yield %>
-          
+      </div>
+
+      <div class="container container-flex">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="mt-1 mb-1">
+              <%= render "devise/shared/flash" %>
+            </div>
+            <%= yield %>
+          </div>
         </div>
       </div>
+
+      <div class="footer">
+        <%# Для вывода названия компании используем хелпер I18n.t %>
+        <p><%= link_to "@#{t('app.company')}", 'https://goodprogrammer.ru' %> 2016</p>
+      </div>
+
     </div>
 
-    <div class="footer">
-      <%# Для вывода названия компании используем хелпер I18n.t %>
-      <p><%= link_to "@#{t('app.company')}", 'https://goodprogrammer.ru' %> 2016</p>
-    </div>
-
-  </div>
-
-</body>
+  </body>
 </html>

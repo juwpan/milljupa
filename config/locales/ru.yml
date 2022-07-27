@@ -95,6 +95,16 @@ ru:
       people_choice: Зрители считают
     users:
       change_password: Сменить имя и пароль
+      rating: Рейтинг
+      place: Место
+      name: Имя
+      prize: Выигрыш
+      games: Игр
+      per_game: За игру
+      date: Дата
+      hints: Подсказки
+      question: Вопрос
+
     events:
       pincode: Пин-код
 
@@ -237,6 +247,10 @@ ru:
       forgot_your_password: Забыли свой пароль?
       password_confirmation: Подтверждение пароля
       email: Почта
+    views:
+      info:
+        minimum_password: Минимальный пароль 1 символ
+        confirm_you_password: Подтвердите введенный пароль
       
       new:
         resend_confirmation_instructions: Выслать повторно письмо с активацией

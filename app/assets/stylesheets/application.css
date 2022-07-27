@@ -26,6 +26,10 @@ a {
   color: rgb(240, 234, 234);
 }
 
+a:hover {
+  color: rgb(232, 208, 127);
+}
+
 a.navbar-brand {
   color: rgb(255, 255, 255);
 }
