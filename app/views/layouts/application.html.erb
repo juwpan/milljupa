@@ -23,9 +23,11 @@
               <% if current_user.is_admin? %>
                 <%# Ссылка на админку %>
                 <%= link_to I18n.t('links.admin'), rails_admin_path, class: 'btn navbar-btn btn-danger btn-xs' %>
-                <%= link_to I18n.t('links.add_new_questions'), new_questions_path, class: 'btn navbar-btn btn-warning btn-xs' %>
+                <%= link_to I18n.t('links.add_new_questions'), new_questions_path, class: 'btn navbar-btn btn-light btn-xs' %>
               <% end %>
-
+              </div>
+              
+            <div class="navbar-form">
               <%= link_to content_tag(:span, "#{current_user.name} - #{number_to_currency current_user.balance}"),
                         user_path(current_user),
                         class: 'btn btn-outline-primary text-color-header'
