@@ -4,7 +4,13 @@
 #
 # Контроллер, отображающий список и профиль юзера
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show]
+  before_action :set_user, only: [:show, :destroy]
+
+  def destroy
+    @user.destroy
+
+    redirect_to root_path, status: :see_other, alert: I18n.t('controllers.users.destroyed')
+  end
 
   def index
     # Для страницы рейтинга нам понадобятся все пользователи, остортированные по выигрышу

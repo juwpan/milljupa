@@ -20,7 +20,7 @@
 
   <div class="form-group mb-3">
     <%= f.label :password, class: 'col-sm-2 control-label'  %>
-    <i class="text-muted">(оставьте поле пустым, если вы не хотите его изменять)</i>
+    <i class="text-muted"><%= I18n.t("devise.views.info.field_empty") %></i>
     <div class="col-sm-6">
       <%= f.password_field :password, autocomplete: "off", class: 'form-control'  %>
     </div>
@@ -35,17 +35,19 @@
 
   <div class="form-group mb-3">
     <%= f.label :current_password, class: 'col-sm-2 control-label' %>
-    <i class="text-muted">(нам нужен ваш текущий пароль для подтверждения ваших изменений)</i>
+    <i class="text-muted"><%= I18n.t("devise.views.info.get_here_password") %></i>
     <div class="col-sm-6">
       <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
     </div>
   </div>
   
+
   <div class="form-group mb-3 mt-2">
     <div class="col-sm-offset-2 col-sm-6">
-      <%= f.submit t("submit.update"), class: "btn btn-warning", data: { turbo: false } %>
+      <%= f.submit t("submit.update"), class: "btn btn-warning" %>
+      
       <%= link_to t("links.delete_account"), @user,
-          data: { turbo_method: "delete", turbo_confirm: t("are_you_sure") },
+        data: {  turbo_method: "delete", turbo_confirm: t("are_you_sure")},
                 class: 'btn btn-danger' %>
     </div>
   </div>

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   # в профиле юзера показываем его игры, на главной - список лучших игроков
-  resources :users, only: [:index, :show]
+  resources :users, only: [:index, :show, :destroy]
 
   resources :games, only: [:show, :create] do
     # доп. методы ресурса:
